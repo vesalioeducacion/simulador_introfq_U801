@@ -1,0 +1,2774 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>INTRODUCCIÓN A LA FISICOQUÍMICA - Fisicoquímica Enzimática (Facultad de Cs. Médicas - UCCuyo)</title>
+  <!-- Tailwind CSS CDN -->
+    <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js CDN for clinical & kinetic plots -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Google Fonts: Outfit & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <style>
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: #f7f9f6;
+      color: #1e293b;
+    }
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    /* Paleta Institucional UCCuyo (Verde Oliva) */
+    .text-accent { color: #436600; }
+    .bg-accent { background-color: #436600; }
+    .bg-accent-hover:hover { background-color: #324d00; }
+    .bg-accent-light { background-color: #f1f6eb; }
+    .border-accent { border-color: #436600; }
+
+    .text-primary { color: #436600; }
+    .bg-primary { background-color: #436600; }
+    .bg-primary-dark { background-color: #324d00; }
+    .border-primary { border-color: #436600; }
+    
+    .focus-accent:focus {
+      border-color: #436600;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(67, 102, 0, 0.2);
+    }
+    
+    .custom-scroll::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 10px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 10px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+
+    .interactive-card {
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .interactive-card:hover {
+      transform: translateY(-2px);
+      border-color: #436600;
+      box-shadow: 0 10px 25px -5px rgba(67, 102, 0, 0.12);
+    }
+
+    /* Custom range sliders styling */
+    input[type=range] {
+      accent-color: #436600;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-accent/20 text-gray-800">
+
+  <!-- ================= TOP BAR INSTITUCIONAL UCCUYO ================= -->
+    <!-- Cabecera Institucional UCCuyo -->
+  <header class="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-accent flex items-center justify-center text-white font-bold text-xl shadow-md">
+          FQ
+        </div>
+        <div>
+          <h1 class="text-lg font-bold text-gray-800 tracking-wide uppercase">INTRODUCCIÓN A LA FISICOQUÍMICA</h1>
+          <p class="text-xs text-gray-500 font-semibold">Lic. en Kinesiología y Fisiatría (Facultad de Cs. Médicas - UCCuyo)</p>
+        </div>
+      </div>
+      
+      <div class="flex items-center gap-2">
+        <!-- Botón Vademécum Teórico -->
+        <button onclick="openFormulasModal()" class="flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 text-gray-700 text-xs font-semibold rounded-lg border border-gray-200 hover:bg-gray-200 transition">
+          <i class="fa-solid fa-book-bookmark text-accent"></i>
+          <span class="hidden sm:inline">Vademécum</span>
+        </button>
+        <!-- Botón Guía de Uso -->
+        <button onclick="openTutorial()" class="flex items-center gap-1.5 px-3 py-1.5 bg-accent text-white text-xs font-semibold rounded-lg shadow-sm hover:opacity-90 transition">
+          <i class="fa-solid fa-circle-question"></i>
+          <span>Guía de Uso</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= MAIN LAYOUT MODULAR CON SIDEBAR ================= -->
+    <!-- Contenido Principal con Barra Lateral -->
+  <main class="flex-1 max-w-6xl w-full mx-auto p-4 md:p-6 flex flex-col lg:flex-row gap-6">
+    
+    <!-- Menú de Navegación Lateral -->
+    <nav class="w-full lg:w-64 flex flex-row lg:flex-col gap-2 bg-white p-3 rounded-2xl shadow-sm border border-gray-100 overflow-x-auto lg:overflow-x-visible whitespace-nowrap lg:whitespace-normal sticky top-20 h-fit">
+      <button onclick="switchTab('tab-anatomy')" id="nav-tab-anatomy" class="bg-accent text-white flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-sm font-semibold transition shadow-sm flex items-center gap-2">
+        <i class="fa-solid fa-shapes"></i> <span>1. Anatomía & Complejo</span>
+      </button>
+      <button onclick="switchTab('tab-energy')" id="nav-tab-energy" class="text-gray-700 hover:bg-gray-100 flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-sm font-medium transition flex items-center gap-2">
+        <i class="fa-solid fa-chart-line"></i> <span>2. Bioenergética (E<sub>a</sub>)</span>
+      </button>
+      <button onclick="switchTab('tab-classes')" id="nav-tab-classes" class="text-gray-700 hover:bg-gray-100 flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-sm font-medium transition flex items-center gap-2">
+        <i class="fa-solid fa-layer-group"></i> <span>3. 7 Clases (EC 1-7)</span>
+      </button>
+      <button onclick="switchTab('tab-kinetics')" id="nav-tab-kinetics" class="text-gray-700 hover:bg-gray-100 flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-sm font-medium transition flex items-center gap-2">
+        <i class="fa-solid fa-flask-vial"></i> <span>4. Factores & Cinética</span>
+      </button>
+      <button onclick="switchTab('tab-clinical')" id="nav-tab-clinical" class="text-gray-700 hover:bg-gray-100 flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-sm font-medium transition flex items-center gap-2">
+        <i class="fa-solid fa-user-doctor"></i> <span>5. Farmacología & Clínica</span>
+      </button>
+    </nav>
+
+    <!-- Contenedor Central de Contenido Modular -->
+    <div class="flex-1 min-w-0 space-y-6">
+
+    <!-- ========================================================================= -->
+    <!-- MODULE 1: ANATOMÍA MOLECULAR Y MODELO LLAVE-CERRADURA                    -->
+    <!-- ========================================================================= -->
+    <section id="tab-anatomy" class="tab-content block space-y-6">
+      <!-- Section Intro Banner -->
+      <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-cyan-600 bg-cyan-50 px-2.5 py-1 rounded-md">Módulo 1</span>
+          <h1 class="text-2xl font-extrabold text-slate-900 mt-2">Naturaleza, Estructura y Complejo Enzima-Sustrato</h1>
+          <p class="text-sm text-slate-600 mt-1 max-w-3xl">
+            Las enzimas son catalizadores biológicos proteicos de alta especificidad. Aceleran las reacciones metabólicas reduciendo escalas temporales de años a milisegundos mediante la unión estérica en su sitio activo tridimensional.
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-2 text-xs">
+          <div class="bg-slate-100 px-3 py-2 rounded-lg border border-slate-200">
+            <span class="block text-slate-400 font-semibold">Tasa de Aceleración</span>
+            <span class="font-bold text-slate-800 text-sm">Hasta 10<sup>7</sup> - 10<sup>14</sup>&times;</span>
+          </div>
+          <div class="bg-cyan-50 px-3 py-2 rounded-lg border border-cyan-200 text-cyan-800">
+            <span class="block text-cyan-600 font-semibold">Modelo Modelo</span>
+            <span class="font-bold text-sm">Fischer (Llave - Cerradura)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grid: Interactive Lock & Key Reactor + Structural Inspector -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Left: Interactive Canvas Reactor (8 cols) -->
+        <div class="lg:col-span-8 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+              <div class="flex items-center space-x-2">
+                <i class="fa-solid fa-microscope text-cyan-600"></i>
+                <h2 class="font-bold text-slate-900">Simulador de Hidrólisis: Lactasa e Hidrólisis de Lactosa</h2>
+              </div>
+              <span id="cycle-state-tag" class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
+                Estado: Enzima Libre (E)
+              </span>
+            </div>
+
+            <!-- Reaction Stage Canvas -->
+            <div class="relative w-full h-72 sm:h-80 bg-gradient-to-b from-slate-900 to-slate-950 rounded-xl overflow-hidden mt-4 border border-slate-800 shadow-inner">
+              <canvas id="lockKeyCanvas" class="w-full h-full block"></canvas>
+
+              <!-- Overlay info badges on canvas -->
+              <div class="absolute bottom-3 left-3 bg-slate-900/80 backdrop-blur px-3 py-1.5 rounded-lg border border-slate-700 text-[11px] text-slate-300 space-x-3 flex items-center">
+                <span><i class="fa-solid fa-cube text-cyan-400 mr-1"></i>Sitio Activo Estérico</span>
+                <span><i class="fa-solid fa-shield text-amber-400 mr-1"></i>Sitio Alostérico</span>
+                <span><i class="fa-solid fa-circle text-emerald-400 mr-1"></i>Sustrato: Lactosa</span>
+              </div>
+              <div class="absolute top-3 right-3 bg-slate-900/80 backdrop-blur px-2.5 py-1 rounded-lg border border-slate-700 text-xs font-mono text-cyan-300" id="micro-timer">
+                Tiempo de Catálisis: 0.00 ms
+              </div>
+            </div>
+          </div>
+
+          <!-- Controls for Lock-and-Key -->
+          <div class="mt-6 pt-4 border-t border-slate-100">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div class="flex items-center space-x-2">
+                <button id="btn-next-step" onclick="advanceEnzymeStep()" class="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white rounded-xl text-xs font-bold transition shadow shadow-cyan-600/30 flex items-center space-x-2">
+                  <i class="fa-solid fa-forward-step"></i>
+                  <span id="btn-step-text">Avanzar Paso (E + S)</span>
+                </button>
+                <button onclick="resetEnzymeReaction()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition">
+                  <i class="fa-solid fa-rotate-left mr-1"></i>Reiniciar Ciclo
+                </button>
+                <button id="btn-auto-cycle" onclick="toggleAutoCycle()" class="px-3 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-xs font-semibold transition">
+                  <i class="fa-solid fa-play mr-1"></i><span id="auto-cycle-text">Auto-Reproducción</span>
+                </button>
+              </div>
+
+              <!-- Equation Display -->
+              <div class="bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200 font-mono-code text-xs text-slate-700 font-semibold">
+                <span class="text-cyan-700">E</span> + <span class="text-amber-700">S</span> &rlarr; <span class="text-purple-700">[ES]</span> &rarr; <span class="text-cyan-700">E</span> + <span class="text-emerald-700">P<sub>1</sub> (Glucosa)</span> + <span class="text-blue-700">P<sub>2</sub> (Galactosa)</span>
+              </div>
+            </div>
+
+            <!-- Explanatory dynamic step card -->
+            <div id="step-description-box" class="mt-4 p-3.5 bg-cyan-50/70 border border-cyan-200 rounded-xl text-xs text-cyan-900 leading-relaxed">
+              <strong>Paso 1: Estado Libre.</strong> La lactasa presenta su hendidura catalítica (sitio activo) tridimensional con cadenas laterales de aminoácidos (Glu y Asp) listas para interactuar con la lactosa mediante puentes de hidrógeno específicos.
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Holoenzyme Anatomy & Cofactors (4 cols) -->
+        <div class="lg:col-span-4 space-y-5">
+          <!-- Holoenzyme Concept Card -->
+          <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+            <h3 class="font-bold text-slate-900 flex items-center space-x-2 text-sm">
+              <i class="fa-solid fa-puzzle-piece text-amber-500"></i>
+              <span>Organización Holoenzimática</span>
+            </h3>
+            <p class="text-xs text-slate-500 mt-1">Estructura cuaternaria y requerimiento de cofactores para la función catalítica activa.</p>
+
+            <div class="mt-4 space-y-3">
+              <!-- Apoenzyme -->
+              <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                <div class="flex items-center justify-between text-xs font-bold text-slate-800">
+                  <span>Apoenzima (Proteína Pura)</span>
+                  <span class="text-[10px] bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded">Inactiva por sí sola</span>
+                </div>
+                <p class="text-[11px] text-slate-500 mt-1">Secuencia polipeptídica con estructura terciaria. Proporciona el andamiaje estérico del sitio activo.</p>
+              </div>
+
+              <!-- Plus icon -->
+              <div class="text-center text-slate-400 text-xs font-bold -my-1">+</div>
+
+              <!-- Cofactor / Coenzyme Switcher -->
+              <div class="p-3 rounded-xl bg-amber-50/70 border border-amber-200">
+                <div class="flex items-center justify-between text-xs font-bold text-amber-900">
+                  <span>Cofactor o Coenzima</span>
+                  <span class="text-[10px] bg-amber-200 text-amber-800 px-1.5 py-0.5 rounded">Componente No Proteico</span>
+                </div>
+                <div class="mt-2 text-[11px] text-amber-800 space-y-1">
+                  <div class="flex items-center justify-between">
+                    <span>&bull; <strong>Cofactor Inorgánico:</strong> Iones metálicos (Mg<sup>2+</sup>, Zn<sup>2+</sup>, Fe<sup>2+</sup>).</span>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span>&bull; <strong>Coenzima Orgánica:</strong> Derivados de vitaminas (NAD<sup>+</sup>, FAD, Coenzima A).</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Equals Holoenzyme -->
+              <div class="text-center text-slate-400 text-xs font-bold -my-1">=</div>
+
+              <div class="p-3 rounded-xl bg-emerald-50 border border-emerald-200">
+                <div class="flex items-center justify-between text-xs font-bold text-emerald-900">
+                  <span>Holoenzima (Complejo Funcional)</span>
+                  <span class="text-[10px] bg-emerald-200 text-emerald-800 px-1.5 py-0.5 rounded font-bold">100% Activa</span>
+                </div>
+                <p class="text-[11px] text-emerald-700 mt-1">Complejo macromolecular completo con conformación catalíticamente competente.</p>
+              </div>
+            </div>
+
+            <!-- Interactive Toggle: Simular Deficiencia de Cofactor -->
+            <div class="mt-4 pt-4 border-t border-slate-100">
+              <label class="flex items-center justify-between text-xs text-slate-700 cursor-pointer">
+                <span class="font-semibold">Simular Deficiencia de Ión Mg<sup>2+</sup>:</span>
+                <input type="checkbox" id="toggle-cofactor" onchange="toggleCofactorState(this)" class="w-4 h-4 text-cyan-600 rounded">
+              </label>
+              <p id="cofactor-status-desc" class="text-[11px] text-slate-400 mt-1.5">
+                Cofactor presente: La apoenzima se pliega de manera óptima permitiendo la catálisis.
+              </p>
+            </div>
+          </div>
+
+          <!-- Allosteric Site Callout -->
+          <div class="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl p-5 border border-indigo-100 shadow-sm">
+            <h4 class="font-bold text-indigo-950 text-xs flex items-center space-x-1.5">
+              <i class="fa-solid fa-atom text-indigo-600"></i>
+              <span>Sitio Alostérico vs. Sitio Activo</span>
+            </h4>
+            <p class="text-[11px] text-indigo-900/80 mt-1.5 leading-relaxed">
+              El <strong>sitio alostérico</strong> es una hendidura topográficamente distante del sitio activo. Cuando un efector o modulador se acopla, induce una transición alostérica que modula positivamente o distorsiona negativamente la afinidad por el sustrato.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- MODULE 2: BIOENERGÉTICA Y ENERGÍA DE ACTIVACIÓN                           -->
+    <!-- ========================================================================= -->
+    <section id="tab-energy" class="tab-content hidden space-y-6">
+      <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-amber-600 bg-amber-50 px-2.5 py-1 rounded-md">Módulo 2</span>
+          <h1 class="text-2xl font-extrabold text-slate-900 mt-2">Bioenergética y Barrera de Activación</h1>
+          <p class="text-sm text-slate-600 mt-1 max-w-3xl">
+            Toda reacción química celular requiere superar un estado de transición inestable de alta energía. Las enzimas no alteran la variación de energía libre global (&Delta;G), sino que disminuyen sustancialmente la energía de activación (E<sub>a</sub>).
+          </p>
+        </div>
+        <div class="flex items-center space-x-2 text-xs">
+          <div class="bg-slate-100 p-3 rounded-xl border border-slate-200 text-center">
+            <span class="text-slate-400 block font-medium">Principio Termodinámico</span>
+            <span class="font-mono font-bold text-slate-800">&Delta;G global = Constante</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Energy Diagram + Real-time Particle Kinetics -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Energy Curve Canvas (7 cols) -->
+        <div class="lg:col-span-7 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+              <h2 class="font-bold text-slate-900 text-sm flex items-center space-x-2">
+                <i class="fa-solid fa-chart-area text-amber-500"></i>
+                <span>Perfil de Coordenada de Reacción Energética</span>
+              </h2>
+              <div class="flex items-center space-x-3 text-xs">
+                <span class="inline-flex items-center text-rose-600 font-semibold">
+                  <span class="w-3 h-1 bg-rose-500 inline-block mr-1.5 rounded"></span> Sin Enzima
+                </span>
+                <span class="inline-flex items-center text-cyan-600 font-semibold">
+                  <span class="w-3 h-1 bg-cyan-500 inline-block mr-1.5 rounded"></span> Con Enzima
+                </span>
+              </div>
+            </div>
+
+            <!-- Energy Canvas -->
+            <div class="relative w-full h-80 bg-slate-900 rounded-xl overflow-hidden mt-4 border border-slate-800">
+              <canvas id="energyCurveCanvas" class="w-full h-full block"></canvas>
+            </div>
+          </div>
+
+          <!-- Energy Parameters & Calculations -->
+          <div class="mt-4 pt-4 border-t border-slate-100 grid grid-cols-3 gap-3 text-center">
+            <div class="p-2.5 rounded-xl bg-rose-50 border border-rose-100">
+              <span class="text-[10px] font-semibold text-rose-600 uppercase block">E<sub>a</sub> Sin Enzima</span>
+              <span id="val-ea-uncat" class="font-mono font-bold text-rose-800 text-base">75.0 kJ/mol</span>
+            </div>
+            <div class="p-2.5 rounded-xl bg-cyan-50 border border-cyan-100">
+              <span class="text-[10px] font-semibold text-cyan-600 uppercase block">E<sub>a</sub> Catalizada</span>
+              <span id="val-ea-cat" class="font-mono font-bold text-cyan-800 text-base">26.5 kJ/mol</span>
+            </div>
+            <div class="p-2.5 rounded-xl bg-slate-100 border border-slate-200">
+              <span class="text-[10px] font-semibold text-slate-600 uppercase block">&Delta;G Termodinámico</span>
+              <span class="font-mono font-bold text-slate-800 text-base">-18.2 kJ/mol</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Particle Crossing Simulator: Overcoming the Energy Barrier (5 cols) -->
+        <div class="lg:col-span-5 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div>
+                <h3 class="font-bold text-slate-900 text-sm">Simulador de Moléculas y Barrera</h3>
+                <p class="text-xs text-slate-500">Distribución de energía cinética y conversión a productos</p>
+              </div>
+              <button onclick="triggerMolecularBurst()" class="px-2.5 py-1 bg-amber-500 hover:bg-amber-600 text-white rounded-lg text-xs font-semibold shadow">
+                <i class="fa-solid fa-bolt mr-1"></i>Pulso Térmico
+              </button>
+            </div>
+
+            <!-- Particle Barrier Canvas -->
+            <div class="relative w-full h-56 bg-slate-950 rounded-xl overflow-hidden mt-4 border border-slate-800">
+              <canvas id="particleBarrierCanvas" class="w-full h-full block"></canvas>
+            </div>
+
+            <!-- Stats bar -->
+            <div class="flex justify-between items-center text-xs mt-3 px-1 text-slate-600">
+              <span>Sustratos (S): <strong id="count-substrates" class="text-amber-600 font-mono">40</strong></span>
+              <span>Productos (P) Formados: <strong id="count-products" class="text-emerald-600 font-mono">0</strong></span>
+              <span>Tasa de Traspaso: <strong id="rate-barrier" class="text-cyan-600 font-mono">Alta</strong></span>
+            </div>
+          </div>
+
+          <!-- Interactive Control Switch for Catalyst Presence -->
+          <div class="mt-4 pt-4 border-t border-slate-100 space-y-3">
+            <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200">
+              <div class="text-xs">
+                <span class="font-bold text-slate-800 block">Presencia del Catalizador (Lactasa)</span>
+                <span class="text-slate-500 text-[11px]" id="catalyst-state-text">Enzima activa: estabiliza el estado de transición</span>
+              </div>
+              <button id="toggle-catalyst-btn" onclick="toggleCatalystState()" class="px-3 py-1.5 bg-cyan-600 text-white rounded-lg font-bold text-xs shadow transition">
+                Enzima: ACTIVA
+              </button>
+            </div>
+
+            <div class="p-3 bg-amber-50/80 border border-amber-200 rounded-xl text-xs text-amber-900 leading-relaxed">
+              <strong>Foco Biomédico:</strong> El estado de transición dura menos de 10<sup>-13</sup> segundos. La enzima establece micro-interacciones electrostáticas complementarias que disminuyen la tensión química necesaria para romper enlaces covalentes sin alterar el equilibrio termodinámico.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- MODULE 3: CLASIFICACIÓN INTERNACIONAL DE LAS ENZIMAS (7 CLASES)           -->
+    <!-- ========================================================================= -->
+    <section id="tab-classes" class="tab-content hidden space-y-6">
+      <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-purple-600 bg-purple-50 px-2.5 py-1 rounded-md">Módulo 3</span>
+          <h1 class="text-2xl font-extrabold text-slate-900 mt-2">Clasificación Internacional Sistemática (EC 1 a 7)</h1>
+          <p class="text-sm text-slate-600 mt-1 max-w-3xl">
+            La Unión Internacional de Bioquímica y Biología Molecular (IUBMB) cataloga a las enzimas en 7 clases funcionales según el tipo de reacción química catalizada.
+          </p>
+        </div>
+        <div class="bg-purple-50 text-purple-900 px-3.5 py-2 rounded-xl border border-purple-200 text-xs font-semibold">
+          Comisión Enzimática (EC Code)
+        </div>
+      </div>
+
+      <!-- 7 Classes Interactive Grid -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3" id="class-cards-container">
+        <!-- Javascript dynamically populates or activates these classes -->
+      </div>
+
+      <!-- Detailed Laboratory Workbench for Selected Class -->
+      <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          
+          <!-- Class Specs & Chemical Mechanism (7 cols) -->
+          <div class="lg:col-span-7 space-y-4">
+            <div class="flex items-center space-x-3">
+              <span id="selected-class-badge" class="px-3 py-1 bg-cyan-600 text-white rounded-lg font-mono text-xs font-bold">EC 1</span>
+              <h2 id="selected-class-title" class="text-xl font-extrabold text-slate-900">Oxidorreductasas</h2>
+            </div>
+            
+            <p id="selected-class-desc" class="text-sm text-slate-600 leading-relaxed">
+              Catalizan la transferencia de electrones (iones hidruro o átomos de hidrógeno) entre dos moléculas (reacciones de óxido-reducción metabólicas).
+            </p>
+
+            <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+              <span class="text-xs font-bold text-slate-700 uppercase tracking-wider block">Mecanismo Químico Fundamental</span>
+              <div id="selected-class-reaction" class="font-mono text-xs sm:text-sm text-slate-900 font-semibold p-2 bg-white rounded-lg border border-slate-200 text-center">
+                A<sub>red</sub> + B<sub>ox</sub> &#8644; A<sub>ox</sub> + B<sub>red</sub>
+              </div>
+            </div>
+
+            <!-- Biomedical & Kinesiology Application Box -->
+            <div class="p-4 bg-cyan-50/70 border border-cyan-200 rounded-xl space-y-1.5">
+              <div class="flex items-center space-x-2 text-cyan-900 font-bold text-xs">
+                <i class="fa-solid fa-heart-pulse text-cyan-600"></i>
+                <span id="selected-class-bio-title">Aplicación en Ciencias Médicas & Kinesiología</span>
+              </div>
+              <p id="selected-class-bio-desc" class="text-xs text-cyan-950 leading-relaxed">
+                <strong>Lactato Deshidrogenasa (LDH):</strong> Crucial en la glucólisis anaeróbica durante contracciones musculares vigorosas en kinesiología deportiva. Indicador sérico de necrosis tisular e isquemia miocárdica.
+              </p>
+            </div>
+          </div>
+
+          <!-- Interactive Chemical Experiment Simulation for this class (5 cols) -->
+          <div class="lg:col-span-5 bg-slate-900 rounded-xl p-5 text-white flex flex-col justify-between border border-slate-800">
+            <div>
+              <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+                <span class="text-xs font-mono text-cyan-400 font-semibold">Ensayo Cinético in vitro</span>
+                <span class="text-[11px] bg-slate-800 px-2 py-0.5 rounded text-slate-300" id="cuvette-status">Listo para reacción</span>
+              </div>
+
+              <!-- Animated cuvette / reaction representation -->
+              <div class="py-6 flex flex-col items-center justify-center">
+                <div class="w-24 h-36 rounded-b-2xl border-4 border-slate-600 relative overflow-hidden bg-slate-800/80 shadow-inner flex items-end">
+                  <div id="cuvette-liquid" class="w-full h-1/3 bg-cyan-500/70 transition-all duration-700 relative">
+                    <!-- Bubble animations inside -->
+                    <div class="absolute inset-0 flex justify-around items-center opacity-60">
+                      <span class="w-2 h-2 rounded-full bg-white/60 animate-bounce"></span>
+                      <span class="w-1.5 h-1.5 rounded-full bg-white/80 animate-ping"></span>
+                    </div>
+                  </div>
+                </div>
+                <span class="text-xs text-slate-400 mt-2 font-mono" id="cuvette-label">Espectrofotometría: 340 nm</span>
+              </div>
+
+              <div class="text-xs text-slate-300 space-y-1 bg-slate-800/60 p-3 rounded-lg border border-slate-700">
+                <div class="flex justify-between">
+                  <span>Enzima Activa:</span>
+                  <span id="lab-enzyme-name" class="font-bold text-cyan-300">Lactato Deshidrogenasa (LDH)</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>Sustratos Clave:</span>
+                  <span id="lab-substrate-name" class="text-amber-300 font-mono">Piruvato + NADH</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>Cofactor Asociado:</span>
+                  <span id="lab-cofactor-name" class="text-emerald-300 font-mono">NAD+ / H+</span>
+                </div>
+              </div>
+            </div>
+
+            <button onclick="runClassReactionTest()" class="mt-4 w-full py-2.5 bg-gradient-to-r from-cyan-600 to-teal-500 hover:from-cyan-500 hover:to-teal-400 text-white rounded-xl font-bold text-xs shadow transition flex items-center justify-center space-x-2">
+              <i class="fa-solid fa-play"></i>
+              <span>Disparar Reacción en Espectrofotómetro</span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- MODULE 4: FACTORES AMBIENTALES Y CINÉTICA DE SATURACIÓN                  -->
+    <!-- ========================================================================= -->
+    <section id="tab-kinetics" class="tab-content hidden space-y-6">
+      <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-md">Módulo 4</span>
+          <h1 class="text-2xl font-extrabold text-slate-900 mt-2">Factores Ambientales y Cinética de Saturación</h1>
+          <p class="text-sm text-slate-600 mt-1 max-w-3xl">
+            La velocidad catalítica responde a variables termodinámicas y químicas. Analiza el impacto de la temperatura (desnaturalización térmica), perfiles tisulares de pH y la meseta de saturación por concentración de sustrato (V<sub>max</sub>).
+          </p>
+        </div>
+        <div class="flex items-center space-x-2 text-xs">
+          <span class="px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 font-semibold">
+            Modelo Michaelis-Menten: V = (V<sub>max</sub> · [S]) / (K<sub>m</sub> + [S])
+          </span>
+        </div>
+      </div>
+
+      <!-- Controls & Graphs Layout -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Left: Interactive Sliders Station (4 cols) -->
+        <div class="lg:col-span-4 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-5">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <h2 class="font-bold text-slate-900 text-sm flex items-center space-x-2">
+              <i class="fa-solid fa-sliders text-cyan-600"></i>
+              <span>Parámetros Fisiológicos</span>
+            </h2>
+            <button onclick="resetKineticSliders()" class="text-xs text-slate-500 hover:text-cyan-600 font-semibold">
+              <i class="fa-solid fa-rotate-left mr-1"></i>Fisiológico (37°C, pH 7.4)
+            </button>
+          </div>
+
+          <!-- Slider 1: Temperatura -->
+          <div class="space-y-1.5">
+            <div class="flex justify-between items-center text-xs">
+              <span class="font-semibold text-slate-800 flex items-center">
+                <i class="fa-solid fa-temperature-half text-rose-500 mr-1.5"></i> Temperatura:
+              </span>
+              <span id="disp-temp" class="font-mono font-bold text-slate-900 bg-slate-100 px-2 py-0.5 rounded text-xs">37.0 °C</span>
+            </div>
+            <input type="range" id="slider-temp" min="0" max="80" step="0.5" value="37" oninput="updateKineticsSimulation()" class="w-full h-2 bg-slate-200 rounded-lg cursor-pointer">
+            <div class="flex justify-between text-[10px] text-slate-400 font-mono">
+              <span>0°C (Congelación)</span>
+              <span class="text-emerald-600 font-bold">37°C (Óptima Humana)</span>
+              <span>80°C (Desnaturalización)</span>
+            </div>
+            <div id="status-temp-warning" class="text-[11px] font-medium text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-100">
+              Conformación óptima: cinética enzimática celular conservada.
+            </div>
+          </div>
+
+          <!-- Slider 2: pH tisular -->
+          <div class="space-y-1.5 pt-3 border-t border-slate-100">
+            <div class="flex justify-between items-center text-xs">
+              <span class="font-semibold text-slate-800 flex items-center">
+                <i class="fa-solid fa-droplet text-blue-500 mr-1.5"></i> Microambiente de pH:
+              </span>
+              <span id="disp-ph" class="font-mono font-bold text-slate-900 bg-slate-100 px-2 py-0.5 rounded text-xs">7.40</span>
+            </div>
+            <input type="range" id="slider-ph" min="1" max="13" step="0.1" value="7.4" oninput="updateKineticsSimulation()" class="w-full h-2 bg-slate-200 rounded-lg cursor-pointer">
+            
+            <!-- Quick preset buttons for pH -->
+            <div class="flex gap-1.5 pt-1">
+              <button onclick="setPhPreset('pepsin')" class="flex-1 py-1 px-1.5 text-[10px] bg-slate-100 hover:bg-slate-200 text-slate-700 rounded font-semibold text-center truncate">
+                Pepsina (pH 1.8)
+              </button>
+              <button onclick="setPhPreset('salivary')" class="flex-1 py-1 px-1.5 text-[10px] bg-slate-100 hover:bg-slate-200 text-slate-700 rounded font-semibold text-center truncate">
+                Salival (pH 6.9)
+              </button>
+              <button onclick="setPhPreset('trypsin')" class="flex-1 py-1 px-1.5 text-[10px] bg-slate-100 hover:bg-slate-200 text-slate-700 rounded font-semibold text-center truncate">
+                Tripsina (pH 8.2)
+              </button>
+            </div>
+            <div id="status-ph-desc" class="text-[11px] text-slate-500">
+              pH fisiológico neutro sistémico (plasma / citoplasma).
+            </div>
+          </div>
+
+          <!-- Slider 3: Concentración de Sustrato [S] -->
+          <div class="space-y-1.5 pt-3 border-t border-slate-100">
+            <div class="flex justify-between items-center text-xs">
+              <span class="font-semibold text-slate-800 flex items-center">
+                <i class="fa-solid fa-cubes-stacked text-amber-500 mr-1.5"></i> Sustrato [S]:
+              </span>
+              <span id="disp-substrate" class="font-mono font-bold text-slate-900 bg-slate-100 px-2 py-0.5 rounded text-xs">25.0 &mu;M</span>
+            </div>
+            <input type="range" id="slider-substrate" min="0" max="120" step="1" value="25" oninput="updateKineticsSimulation()" class="w-full h-2 bg-slate-200 rounded-lg cursor-pointer">
+            <div class="flex justify-between text-[10px] text-slate-400 font-mono">
+              <span>0 &mu;M</span>
+              <span class="text-cyan-700 font-bold">K<sub>m</sub> &asymp; 20 &mu;M</span>
+              <span>120 &mu;M (Saturación)</span>
+            </div>
+          </div>
+
+          <!-- Dynamic Rate Indicator Card -->
+          <div class="p-4 bg-gradient-to-br from-slate-900 to-slate-800 rounded-xl text-white space-y-2 border border-slate-700">
+            <div class="flex justify-between items-center text-xs text-slate-300">
+              <span>Velocidad de Reacción (V):</span>
+              <span id="kinetic-pct" class="font-mono text-cyan-300 font-bold">55.6% de Vmax</span>
+            </div>
+            <div class="w-full bg-slate-700 h-2.5 rounded-full overflow-hidden">
+              <div id="v-progress-bar" class="bg-gradient-to-r from-cyan-500 to-emerald-400 h-full rounded-full transition-all duration-300" style="width: 55.6%;"></div>
+            </div>
+            <div class="flex justify-between text-[11px] text-slate-400 font-mono">
+              <span>V<sub>obs</sub>: <strong id="v-abs-value" class="text-white">55.6 &mu;mol/s</strong></span>
+              <span>V<sub>max</sub>: <strong>100.0 &mu;mol/s</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Real-time Dynamic Charts (8 cols) -->
+        <div class="lg:col-span-8 space-y-6">
+          
+          <!-- Chart 1: Michaelis-Menten Saturation Curve with Live Operating Point -->
+          <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-slate-100 gap-2">
+              <div>
+                <h3 class="font-bold text-slate-900 text-sm flex items-center space-x-2">
+                  <i class="fa-solid fa-chart-line text-emerald-600"></i>
+                  <span>Curva Cinética de Saturación (Michaelis-Menten)</span>
+                </h3>
+                <p class="text-xs text-slate-500">Muestra la transición de orden 1 a orden cero (meseta V<sub>max</sub>)</p>
+              </div>
+              <div class="flex items-center space-x-2 text-xs">
+                <span class="inline-flex items-center px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-mono font-semibold border border-emerald-200 text-[11px]">
+                  Punto Operativo Actual: [S] = <span id="tag-current-s" class="ml-1 font-bold">25 &mu;M</span>
+                </span>
+              </div>
+            </div>
+
+            <div class="relative w-full h-64 mt-4">
+              <canvas id="mmChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Chart 2: Double Factor Curves (Temperature & pH Optima) -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            
+            <!-- Temp Curve -->
+            <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm">
+              <div class="flex items-center justify-between text-xs font-bold text-slate-800 pb-2 border-b border-slate-100">
+                <span>Perfil Térmico (Desnaturalización)</span>
+                <span class="text-rose-600 font-mono text-[11px]">T<sub>óptima</sub> &asymp; 37 °C</span>
+              </div>
+              <div class="relative w-full h-40 mt-2">
+                <canvas id="tempChart"></canvas>
+              </div>
+            </div>
+
+            <!-- pH Curve -->
+            <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm">
+              <div class="flex items-center justify-between text-xs font-bold text-slate-800 pb-2 border-b border-slate-100">
+                <span>Perfil de pH Tisular</span>
+                <span class="text-blue-600 font-mono text-[11px]">Ionización de cadenas R</span>
+              </div>
+              <div class="relative w-full h-40 mt-2">
+                <canvas id="phChart"></canvas>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- MODULE 5: INHIBICIÓN FARMACOLÓGICA Y DIAGNÓSTICO CLÍNICO                 -->
+    <!-- ========================================================================= -->
+    <section id="tab-clinical" class="tab-content hidden space-y-6">
+      <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-rose-600 bg-rose-50 px-2.5 py-1 rounded-md">Módulo 5</span>
+          <h1 class="text-2xl font-extrabold text-slate-900 mt-2">Farmacología de la Inhibición y Diagnóstico Enzimático</h1>
+          <p class="text-sm text-slate-600 mt-1 max-w-3xl">
+            Aplica los principios de la fisicoquímica catalítica al diseño de fármacos (estatinas, antihipertensivos) y al perfil de biomarcadores séricos en cardiología, gastroenterología y kinesiología deportiva.
+          </p>
+        </div>
+        <div class="flex space-x-2">
+          <button onclick="switchSubTabClinical('inhibition')" id="btn-subtab-inhibition" class="px-3 py-2 text-xs font-bold rounded-lg bg-rose-600 text-white shadow">
+            Taller de Inhibición
+          </button>
+          <button onclick="switchSubTabClinical('diagnostics')" id="btn-subtab-diagnostics" class="px-3 py-2 text-xs font-bold rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200">
+            Laboratorio de Casos Clínicos
+          </button>
+        </div>
+      </div>
+
+      <!-- SUB-TAB 1: INHIBITION WORKSHOP -->
+      <div id="subtab-content-inhibition" class="space-y-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          
+          <!-- Interactive Inhibition Controls (4 cols) -->
+          <div class="lg:col-span-4 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-5">
+            <h2 class="font-bold text-slate-900 text-sm pb-2 border-b border-slate-100 flex items-center space-x-2">
+              <i class="fa-solid fa-prescription-bottle-medical text-rose-600"></i>
+              <span>Tipo de Inhibidor Farmacológico</span>
+            </h2>
+
+            <div class="space-y-2.5">
+              <!-- None -->
+              <label class="flex items-start p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+                <input type="radio" name="inhibitor-type" value="none" checked onchange="updateInhibitionType(this.value)" class="mt-0.5 text-rose-600 focus:ring-rose-500">
+                <div class="ml-2.5">
+                  <span class="block text-xs font-bold text-slate-900">Sin Inhibidor (Control Fisiológico)</span>
+                  <span class="block text-[11px] text-slate-500">Parámetros nativos: K<sub>m</sub> basal y V<sub>max</sub> completa.</span>
+                </div>
+              </label>
+
+              <!-- Competitive -->
+              <label class="flex items-start p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+                <input type="radio" name="inhibitor-type" value="competitive" onchange="updateInhibitionType(this.value)" class="mt-0.5 text-rose-600 focus:ring-rose-500">
+                <div class="ml-2.5">
+                  <span class="block text-xs font-bold text-slate-900">Inhibidor Competitivo</span>
+                  <span class="block text-[11px] text-slate-500">Análogo estructural. Ocupa el <strong>sitio activo</strong>. Compite directamente con el sustrato.</span>
+                </div>
+              </label>
+
+              <!-- Non-Competitive / Allosteric -->
+              <label class="flex items-start p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+                <input type="radio" name="inhibitor-type" value="noncompetitive" onchange="updateInhibitionType(this.value)" class="mt-0.5 text-rose-600 focus:ring-rose-500">
+                <div class="ml-2.5">
+                  <span class="block text-xs font-bold text-slate-900">Inhibidor No Competitivo (Alostérico)</span>
+                  <span class="block text-[11px] text-slate-500">Se une al <strong>sitio alostérico</strong>. Induce distorsión conformacional; no se revierte aumentando [S].</span>
+                </div>
+              </label>
+            </div>
+
+            <!-- Kinetic Parameter Impact Metrics -->
+            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+              <span class="text-xs font-bold text-slate-700 uppercase tracking-wider block">Parámetros Resultantes</span>
+              
+              <div class="flex justify-between items-center text-xs">
+                <span class="text-slate-600">Afinidad Aparente (K<sub>m</sub>):</span>
+                <span id="metric-km" class="font-mono font-bold text-slate-900">20.0 &mu;M (Normal)</span>
+              </div>
+              <div class="flex justify-between items-center text-xs">
+                <span class="text-slate-600">Velocidad Máxima (V<sub>max</sub>):</span>
+                <span id="metric-vmax" class="font-mono font-bold text-slate-900">100.0 &mu;mol/s (100%)</span>
+              </div>
+              <div class="flex justify-between items-center text-xs pt-2 border-t border-slate-200">
+                <span class="text-slate-600">¿Reversible con más [S]?:</span>
+                <span id="metric-reversible" class="font-bold text-emerald-600">N/A</span>
+              </div>
+            </div>
+
+            <!-- Pharmacology drug callout -->
+            <div id="drug-example-box" class="p-3.5 bg-rose-50 border border-rose-200 rounded-xl text-xs text-rose-900 leading-relaxed">
+              <strong>Ejemplo Farmacológico:</strong> Selecciona un inhibidor para revisar su aplicación biomédica clínica (ej. estatinas para el colesterol o antihipertensivos IECA).
+            </div>
+          </div>
+
+          <!-- Right: Visual Steric Canvas + Lineweaver / MM Comparison (8 cols) -->
+          <div class="lg:col-span-8 space-y-6">
+            <!-- Dynamic Active Site Steric Simulation Canvas -->
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+              <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <div>
+                  <h3 class="font-bold text-slate-900 text-sm">Visualización Estérica Macromolecular</h3>
+                  <p class="text-xs text-slate-500" id="inhibition-visual-subtitle">Enzima en estado basal activo sin bloqueos</p>
+                </div>
+                <span id="inhibition-visual-badge" class="px-2.5 py-1 rounded text-xs font-mono font-bold bg-slate-100 text-slate-700">Control</span>
+              </div>
+
+              <div class="relative w-full h-64 bg-slate-950 rounded-xl overflow-hidden mt-4 border border-slate-800">
+                <canvas id="inhibitionCanvas" class="w-full h-full block"></canvas>
+              </div>
+            </div>
+
+            <!-- Comparative Curve Canvas -->
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+              <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+                <h4 class="font-bold text-slate-900 text-xs">Curva Cinética Comparativa (V vs [S])</h4>
+                <div class="flex space-x-3 text-[11px]">
+                  <span class="inline-flex items-center text-slate-500"><span class="w-2.5 h-2.5 bg-slate-400 rounded-full mr-1"></span>Basal</span>
+                  <span class="inline-flex items-center text-rose-600 font-bold"><span class="w-2.5 h-2.5 bg-rose-500 rounded-full mr-1"></span>Con Inhibidor</span>
+                </div>
+              </div>
+              <div class="relative w-full h-52 mt-2">
+                <canvas id="inhibitionCurveChart"></canvas>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+      <!-- SUB-TAB 2: CLINICAL CASES & BIOMARKER LAB -->
+      <div id="subtab-content-diagnostics" class="hidden space-y-6">
+        
+        <!-- Case Studies Selector Bar -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          <button onclick="loadClinicalCase('iam')" id="case-btn-iam" class="case-card p-4 rounded-xl text-left bg-white border-2 border-cyan-500 shadow-sm transition hover:shadow-md">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-cyan-600 block">Cardiología / Urgencias</span>
+            <span class="font-bold text-slate-900 text-sm block mt-1">Dolor Precordial Opresivo</span>
+            <span class="text-xs text-slate-500 mt-1 block">Hombre 58a, 4h de evolución</span>
+          </button>
+
+          <button onclick="loadClinicalCase('rabdo')" id="case-btn-rabdo" class="case-card p-4 rounded-xl text-left bg-white border border-slate-200 shadow-sm transition hover:shadow-md">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-amber-600 block">Kinesiología Deportiva</span>
+            <span class="font-bold text-slate-900 text-sm block mt-1">Rabdomiólisis Post-Esfuerzo</span>
+            <span class="text-xs text-slate-500 mt-1 block">Atleta de maratón, orina oscura</span>
+          </button>
+
+          <button onclick="loadClinicalCase('hepatitis')" id="case-btn-hepatitis" class="case-card p-4 rounded-xl text-left bg-white border border-slate-200 shadow-sm transition hover:shadow-md">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-600 block">Gastroenterología</span>
+            <span class="font-bold text-slate-900 text-sm block mt-1">Hepatitis Aguda Tóxica</span>
+            <span class="text-xs text-slate-500 mt-1 block">Astenia, ictericia y coluria</span>
+          </button>
+
+          <button onclick="loadClinicalCase('pancreatitis')" id="case-btn-pancreatitis" class="case-card p-4 rounded-xl text-left bg-white border border-slate-200 shadow-sm transition hover:shadow-md">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-purple-600 block">Urgencias Digestivas</span>
+            <span class="font-bold text-slate-900 text-sm block mt-1">Pancreatitis Aguda</span>
+            <span class="text-xs text-slate-500 mt-1 block">Dolor epigástrico en cinturón</span>
+          </button>
+        </div>
+
+        <!-- Case Clinical File & Blood Enzyme Panel Lab -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          
+          <!-- Left: Clinical File Narrative (5 cols) -->
+          <div class="lg:col-span-5 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div class="flex items-center space-x-2">
+                <i class="fa-solid fa-notes-medical text-cyan-600"></i>
+                <h3 class="font-bold text-slate-900 text-sm" id="case-title">Historia Clínica: Caso 1</h3>
+              </div>
+              <span id="case-tag" class="text-xs px-2.5 py-0.5 rounded-full font-bold bg-cyan-100 text-cyan-800">
+                Sospecha: Cardiopatía Isquémica
+              </span>
+            </div>
+
+            <p id="case-narrative" class="text-xs text-slate-600 leading-relaxed">
+              Paciente masculino de 58 años acude a urgencias por dolor retroesternal opresivo irradiado a mandíbula y brazo izquierdo, diaforesis profusa y náuseas.
+            </p>
+
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2 text-xs">
+              <span class="font-bold text-slate-700 block uppercase tracking-wide text-[11px]">Fundamento Fisicoquímico:</span>
+              <p id="case-physico" class="text-slate-600 leading-relaxed text-[11px]">
+                La anoxia celular interrumpe la fosforilación oxidativa mitocondrial, provocando agotamiento de ATP y rotura de la membrana del sarcolema miocárdico. Esto causa la fuga pasiva de enzimas intracelulares de gran tamaño hacia el torrente sanguíneo.
+              </p>
+            </div>
+
+            <!-- Diagnostic decision dropdown & feedback -->
+            <div class="pt-2 space-y-3">
+              <label class="block text-xs font-bold text-slate-800">¿Cuál es tu diagnóstico clínico-enzimático?</label>
+              <select id="select-diagnosis" class="w-full text-xs p-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-cyan-500 font-semibold text-slate-800">
+                <option value="">-- Selecciona Diagnóstico Basado en el Panel --</option>
+                <option value="iam">Infarto Agudo de Miocardio (IAM) - Daño Cardíaco</option>
+                <option value="rabdo">Rabdomiólisis Severa / Lesión Muscular Extensa</option>
+                <option value="hepatitis">Hepatitis Aguda / Necrosis Hepatocelular</option>
+                <option value="pancreatitis">Pancreatitis Aguda Neoplásica / Inflamatoria</option>
+              </select>
+
+              <button onclick="evaluateClinicalDiagnosis()" class="w-full py-2 bg-cyan-600 hover:bg-cyan-700 text-white rounded-xl text-xs font-bold shadow transition">
+                Validar Hipótesis Diagnóstica
+              </button>
+
+              <div id="diag-feedback-box" class="hidden p-3 rounded-xl text-xs leading-relaxed"></div>
+            </div>
+          </div>
+
+          <!-- Right: Serum Biomarkers Analyzer Bar Chart (7 cols) -->
+          <div class="lg:col-span-7 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <h3 class="font-bold text-slate-900 text-sm flex items-center space-x-2">
+                  <i class="fa-solid fa-vial text-rose-500"></i>
+                  <span>Panel Enzimático en Suero Sanguíneo (UI/L)</span>
+                </h3>
+                <span class="text-xs text-slate-400">Valores de Referencia Fisiológicos sombreados</span>
+              </div>
+
+              <!-- Bar Chart -->
+              <div class="relative w-full h-72 mt-4">
+                <canvas id="clinicalBarChart"></canvas>
+              </div>
+            </div>
+
+            <!-- Reference Table Comparison -->
+            <div class="mt-4 pt-3 border-t border-slate-100 grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-[11px]">
+              <div class="p-2 bg-slate-50 rounded-lg">
+                <span class="text-slate-400 block font-mono">CPK Total</span>
+                <span id="ref-cpk" class="font-bold text-slate-800">550 UI/L</span>
+                <span class="text-[9px] text-slate-400">(Ref: &lt;170)</span>
+              </div>
+              <div class="p-2 bg-slate-50 rounded-lg">
+                <span class="text-slate-400 block font-mono">CPK-MB</span>
+                <span id="ref-cpkmb" class="font-bold text-rose-600">68 UI/L</span>
+                <span class="text-[9px] text-slate-400">(Ref: &lt;24)</span>
+              </div>
+              <div class="p-2 bg-slate-50 rounded-lg">
+                <span class="text-slate-400 block font-mono">AST (GOT)</span>
+                <span id="ref-ast" class="font-bold text-slate-800">110 UI/L</span>
+                <span class="text-[9px] text-slate-400">(Ref: &lt;40)</span>
+              </div>
+              <div class="p-2 bg-slate-50 rounded-lg">
+                <span class="text-slate-400 block font-mono">ALT / Lipasa</span>
+                <span id="ref-alt" class="font-bold text-slate-800">32 UI/L</span>
+                <span class="text-[9px] text-slate-400">(Normal)</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+      </div>
+  </main>
+
+    <!-- ========================================================================= -->
+  <!-- MODAL VADEMÉCUM TEÓRICO (U7-01 Style)                                     -->
+  <!-- ========================================================================= -->
+  <div id="modal-formulas" class="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center hidden p-4">
+    <div class="bg-white max-w-3xl w-full rounded-2xl shadow-xl overflow-hidden flex flex-col max-h-[90vh]">
+      <div class="bg-accent p-4 text-white flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-book-bookmark text-xl"></i>
+          <h3 class="font-bold text-base">Vademécum Teórico: Fisicoquímica Enzimática y Fórmulas Clínicas</h3>
+        </div>
+        <button onclick="closeFormulasModal()" class="text-white hover:text-gray-200 transition">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+      
+      <div class="p-6 overflow-y-auto space-y-6 text-xs md:text-sm text-gray-700 custom-scroll leading-relaxed">
+        
+        <!-- Sección 1 -->
+        <div class="border-b border-gray-100 pb-4">
+          <h4 class="font-bold text-accent text-sm mb-2 flex items-center gap-2">
+            <i class="fa-solid fa-dna"></i> 1. Naturaleza y Complejo Enzima-Sustrato
+          </h4>
+          <p class="text-xs text-gray-600 mb-2">
+            Las enzimas son catalizadores biológicos de naturaleza proteica que aumentan la velocidad de reacción reduciendo los tiempos de meses a milisegundos sin consumirse.
+          </p>
+          <div class="bg-slate-50 p-3 rounded-xl border border-gray-200 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+            <div>
+              <span class="font-bold text-gray-800 block">Apoenzima vs. Holoenzima:</span>
+              <p class="text-gray-600 mt-0.5"><strong>Apoenzima:</strong> fracción proteica inactiva por sí sola. <strong>Holoenzima:</strong> enzima completa catalíticamente activa integrada por la apoenzima y su cofactor (inorgánico: Mg<sup>2+</sup>, Zn<sup>2+</sup>) o coenzima (orgánica vitamínica: NAD<sup>+</sup>, FAD).</p>
+            </div>
+            <div>
+              <span class="font-bold text-gray-800 block">Modelo Llave-Cerradura:</span>
+              <p class="text-gray-600 mt-0.5">Complementariedad geométrica tridimensional exacta entre el <em>sitio activo</em> y el sustrato. Ej: Lactasa hidrolizando Lactosa en Glucosa + Galactosa.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sección 2 -->
+        <div class="border-b border-gray-100 pb-4">
+          <h4 class="font-bold text-accent text-sm mb-2 flex items-center gap-2">
+            <i class="fa-solid fa-bolt"></i> 2. Bioenergética y Energía de Activación (E<sub>a</sub>)
+          </h4>
+          <p class="text-xs text-gray-600 mb-2">
+            Barrera energética que los reactivos deben superar para alcanzar el estado de transición y transformarse en productos.
+          </p>
+          <div class="bg-slate-50 p-3 rounded-xl border border-gray-200 text-xs space-y-2">
+            <p><strong>Mecanismo Catalítico:</strong> La enzima estabiliza el estado de transición disminuyendo marcadamente la energía de activación (E<sub>a</sub>).</p>
+            <p class="text-accent font-semibold">&bull; No modifica el cambio de energía libre global (&Delta;G) ni el equilibrio de la reacción (K<sub>eq</sub>).</p>
+          </div>
+        </div>
+
+        <!-- Sección 3 -->
+        <div class="border-b border-gray-100 pb-4">
+          <h4 class="font-bold text-accent text-sm mb-2 flex items-center gap-2">
+            <i class="fa-solid fa-layer-group"></i> 3. Clasificación Internacional de las Enzimas (EC 1-7)
+          </h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs">
+            <div class="bg-gray-50 p-2.5 rounded-lg border border-gray-200">
+              <strong class="text-accent">EC 1 &bull; Oxidorreductasas:</strong> Transferencia de electrones (H<sup>+</sup>/e<sup>-</sup>). Ej: Lactato deshidrogenasa en metabolismo muscular.
+            </div>
+            <div class="bg-gray-50 p-2.5 rounded-lg border border-gray-200">
+              <strong class="text-accent">EC 2 &bull; Transferasas:</strong> Transferencia de grupos funcionales (metilo, fosfato). Ej: CPK (Creatina Quinasa) en regeneración de ATP.
+            </div>
+            <div class="bg-gray-50 p-2.5 rounded-lg border border-gray-200">
+              <strong class="text-accent">EC 3 &bull; Hidrolasas:</strong> Ruptura de enlaces por incorporación de H<sub>2</sub>O. Ej: Lactasa, Amilasa, Lipasa.
+            </div>
+            <div class="bg-gray-50 p-2.5 rounded-lg border border-gray-200">
+              <strong class="text-accent">EC 4 &bull; Liasas:</strong> Ruptura o formación de enlaces sin hidrólisis ni redox.
+            </div>
+            <div class="bg-gray-50 p-2.5 rounded-lg border border-gray-200">
+              <strong class="text-accent">EC 5 &bull; Isomerasas:</strong> Reorganización espacial de átomos intramoleculares.
+            </div>
+            <div class="bg-gray-50 p-2.5 rounded-lg border border-gray-200">
+              <strong class="text-accent">EC 6 &bull; Ligasas:</strong> Unión de dos moléculas acoplada a la hidrólisis de ATP.
+            </div>
+            <div class="bg-gray-50 p-2.5 rounded-lg border border-gray-200 md:col-span-2">
+              <strong class="text-accent">EC 7 &bull; Translocasas:</strong> Movimiento de iones o moléculas a través de membranas biológicas.
+            </div>
+          </div>
+        </div>
+
+        <!-- Sección 4 -->
+        <div class="border-b border-gray-100 pb-4">
+          <h4 class="font-bold text-accent text-sm mb-2 flex items-center gap-2">
+            <i class="fa-solid fa-chart-line"></i> 4. Cinética de Michaelis-Menten & Factores Ambientales
+          </h4>
+          <div class="bg-slate-50 p-3 rounded-xl border border-gray-200 text-xs space-y-2">
+            <p><strong>Ecuación de Michaelis-Menten:</strong> V = (V<sub>max</sub> &middot; [S]) / (K<sub>m</sub> + [S])</p>
+            <p><strong>Saturación de Sitios Activos:</strong> A alta concentración [S], la velocidad alcanza una meseta (V<sub>max</sub>). K<sub>m</sub> es la concentración de sustrato a la cual V = V<sub>max</sub>/2 (afinidad inversa).</p>
+            <p><strong>Temperatura y pH:</strong> Temperatura fisiológica óptima &asymp; 37 &deg;C; a temperaturas &gt; 45 &deg;C sobreviene la desnaturalización térmica por pérdida de estructura terciaria.</p>
+          </div>
+        </div>
+
+        <!-- Sección 5 -->
+        <div>
+          <h4 class="font-bold text-accent text-sm mb-2 flex items-center gap-2">
+            <i class="fa-solid fa-stethoscope"></i> 5. Inhibición Enzimática y Biomarcadores en Kinesiología
+          </h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+            <div class="bg-white p-3 rounded-xl border border-gray-200">
+              <span class="font-bold text-gray-800 block mb-1">Mecanismos de Inhibición:</span>
+              <p class="text-gray-600"><strong>Competitiva:</strong> Se fija en el sitio activo compitiendo con el sustrato. Aumenta K<sub>m</sub>, mantiene V<sub>max</sub>.<br>
+              <strong>No Competitiva (Alostérica):</strong> Se une al sitio alostérico alterando la conformación. Disminuye V<sub>max</sub>, no altera K<sub>m</sub>.</p>
+            </div>
+            <div class="bg-white p-3 rounded-xl border border-gray-200">
+              <span class="font-bold text-gray-800 block mb-1">Marcadores en Suero:</span>
+              <p class="text-gray-600"><strong>CPK (MM/MB):</strong> Lesión muscular estriada, desgarros, rabdomiólisis o infarto.<br>
+              <strong>ALT/AST:</strong> Citólisis hepática.<br>
+              <strong>Amilasa/Lipasa:</strong> Daño pancreático.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      
+      
+    </div>
+  </div>
+
+    <!-- ========================================================================= -->
+  <!-- MODAL DE GUÍA DE USO / TUTORIAL OFICIAL UCCUYO (Estilo U7-01)              -->
+  <!-- ========================================================================= -->
+  <div id="modal-tutorial" class="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center hidden p-4">
+    <div class="bg-white max-w-3xl w-full rounded-2xl shadow-xl overflow-hidden flex flex-col max-h-[90vh]">
+      <div class="bg-accent p-4 text-white flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-circle-question text-xl"></i>
+          <h3 class="font-bold text-base">Guía de Uso del Simulador y Orientación Pedagógica</h3>
+        </div>
+        <button onclick="closeTutorial()" class="text-white hover:text-gray-200 transition">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+      
+      <div class="p-6 overflow-y-auto space-y-5 text-xs md:text-sm text-gray-600 custom-scroll leading-relaxed">
+        <div>
+          <h4 class="font-bold text-accent text-sm mb-1 flex items-center gap-2">
+            <i class="fa-solid fa-bullseye"></i> 1. Propósito Tecnopedagógico
+          </h4>
+          <p>
+            Este simulador interactivo está concebido para estudiantes del curso de ingreso a la <strong>Licenciatura en Kinesiología y Fisiatría (Facultad de Ciencias Médicas - UCCuyo)</strong>. Permite vivenciar, contrastar y experimentar la naturaleza fisicoquímica de los biocatalizadores, su cinética de saturación y su directa correlación biomédica en daño celular tisular y fisioterapia.
+          </p>
+        </div>
+
+        <div class="border-t border-gray-100 pt-3">
+          <h4 class="font-bold text-accent text-sm mb-2 flex items-center gap-2">
+            <i class="fa-solid fa-compass"></i> 2. Guía Detallada por Módulos y Características
+          </h4>
+          <div class="space-y-3.5 text-xs">
+            
+            <!-- Módulo 1 -->
+            <div class="bg-gray-50 p-3.5 rounded-xl border border-gray-200">
+              <strong class="text-accent text-xs block mb-1">
+                <i class="fa-solid fa-shapes mr-1"></i> Módulo 1 &bull; Anatomía Molecular & Complejo Enzima-Sustrato (Lactasa)
+              </strong>
+              <p class="text-gray-600 mb-1.5">
+                Representa el <em>modelo de Llave-Cerradura</em> con complementariedad estérica absoluta entre el sitio activo de la <strong>Lactasa</strong> y la <strong>Lactosa</strong>.
+              </p>
+              <ul class="list-disc list-inside text-gray-500 space-y-0.5">
+                <li><strong>Cofactor Mg<sup>2+</sup>:</strong> Activá o desactivá la casilla para evidenciar el paso de <em>Apoenzima</em> inactiva a <em>Holoenzima</em> catalítica funcional.</li>
+                <li><strong>Velocidad Catalítica:</strong> Modificá el deslizador de velocidad para ralentizar el ciclo catalítico o acelerarlo hasta milisegundos.</li>
+                <li><strong>Catálisis en Tiempo Real:</strong> Presioná <em>&laquo;Paso a Paso&raquo;</em> o <em>&laquo;Catálisis Continua&raquo;</em> para observar la hidrólisis del enlace glucosídico liberando <strong>Glucosa</strong> y <strong>Galactosa</strong>.</li>
+              </ul>
+            </div>
+
+            <!-- Módulo 2 -->
+            <div class="bg-gray-50 p-3.5 rounded-xl border border-gray-200">
+              <strong class="text-accent text-xs block mb-1">
+                <i class="fa-solid fa-chart-line mr-1"></i> Módulo 2 &bull; Bioenergética, Barrera de Activación (E<sub>a</sub>) & Simulación de Partículas
+              </strong>
+              <p class="text-gray-600 mb-1.5">
+                Permite entender por qué las reacciones ocurren a velocidad biológica a 37 &deg;C sin alterar la termodinámica global.
+              </p>
+              <ul class="list-disc list-inside text-gray-500 space-y-0.5">
+                <li><strong>Curva de Coordenada de Reacción:</strong> Contrastá la curva no catalizada (barrera de activación alta) frente a la curva catalizada por enzima (barrera reducida), constatando que el &Delta;G y el equilibrio se mantienen constantes.</li>
+                <li><strong>Cámara Cinética de Partículas:</strong> Presioná <em>&laquo;Enzima: ACTIVA / INACTIVA&raquo;</em> para variar la altura del muro energético central y observar cómo las moléculas superan el estado de transición.</li>
+                <li><strong>Pulso Térmico:</strong> Inyectá energía cinética a la población molecular para simular un incremento de agitación térmica.</li>
+              </ul>
+            </div>
+
+            <!-- Módulo 3 -->
+            <div class="bg-gray-50 p-3.5 rounded-xl border border-gray-200">
+              <strong class="text-accent text-xs block mb-1">
+                <i class="fa-solid fa-layer-group mr-1"></i> Módulo 3 &bull; Laboratorio de las 7 Clases Internacionales (EC 1 a EC 7)
+              </strong>
+              <p class="text-gray-600 mb-1.5">
+                Explorá la clasificación bioquímica oficial de la Comisión Enzimática con ejemplos biomédicos esenciales para kinesiología.
+              </p>
+              <ul class="list-disc list-inside text-gray-500 space-y-0.5">
+                <li><strong>Cuadrícula Interactiva:</strong> Hacé clic en <em>Oxidorreductasas, Transferasas, Hidrolasas, Liasas, Isomerasas, Ligasas o Translocasas</em> para desplegar su ficha técnica, ecuación, sustratos y cofactores.</li>
+                <li><strong>Conexión Kinefisiológica:</strong> Profundizá en el rol de la <strong>Lactato Deshidrogenasa (LDH)</strong> en fatiga muscular anaeróbica y de la <strong>Creatina Quinasa (CPK)</strong> en el pool de fosfocreatina muscular.</li>
+                <li><strong>Ensayo Fotométrico en Cubeta:</strong> Ejecutá la simulación de reacción en cubeta espectrofotométrica para registrar la cinética cromogénica.</li>
+              </ul>
+            </div>
+
+            <!-- Módulo 4 -->
+            <div class="bg-gray-50 p-3.5 rounded-xl border border-gray-200">
+              <strong class="text-accent text-xs block mb-1">
+                <i class="fa-solid fa-flask-vial mr-1"></i> Módulo 4 &bull; Factores Ambientales & Cinética de Saturación (Michaelis-Menten)
+              </strong>
+              <p class="text-gray-600 mb-1.5">
+                Integración de tres gráficas dinámicas sincronizadas mediante Chart.js.
+              </p>
+              <ul class="list-disc list-inside text-gray-500 space-y-0.5">
+                <li><strong>Temperatura (0 a 80 &deg;C):</strong> Evidenciá la campana de temperatura óptima fisiológica (&asymp; 37 &deg;C) y el colapso brusco por <em>desnaturalización térmica irreversible</em> al superar los 45-50 &deg;C.</li>
+                <li><strong>pH Tisular (1 a 13):</strong> Comprobá la adaptación del microambiente tisular (pH óptimo neutro fisiológico vs. pH gástrico ácido).</li>
+                <li><strong>Concentración de Sustrato [S]:</strong> Visualizá la progresión desde velocidad de primer orden hasta la meseta de orden cero (saturación completa de sitios activos a V<sub>max</sub>).</li>
+                <li><strong>Preajustes Clínicos Rápidos:</strong> Accedé a botones inmediatos como <em>&laquo;Fisiológico Normal&raquo;</em>, <em>&laquo;Fiebre (39.5 &deg;C)&raquo;</em>, <em>&laquo;Hipertermia (43 &deg;C)&raquo;</em> y <em>&laquo;Pepsina Gástrica&raquo;</em>.</li>
+              </ul>
+            </div>
+
+            <!-- Módulo 5 -->
+            <div class="bg-gray-50 p-3.5 rounded-xl border border-gray-200">
+              <strong class="text-accent text-xs block mb-1">
+                <i class="fa-solid fa-user-doctor mr-1"></i> Módulo 5 &bull; Farmacología, Mecanismos de Inhibición & Taller Clínico Kinésico
+              </strong>
+              <p class="text-gray-600 mb-1.5">
+                Articulación directa con farmacología terapéutica y diagnóstico de laboratorio en rehabilitación.
+              </p>
+              <ul class="list-disc list-inside text-gray-500 space-y-0.5">
+                <li><strong>Inhibición Competitiva vs. Alostérica (No Competitiva):</strong> Modificá el tipo de inhibidor y compará las curvas cinéticas. Comprobá cómo la inhibición competitiva es reversible con exceso de [S] (aumenta K<sub>m</sub> sin variar V<sub>max</sub>), mientras que la alostérica deprime V<sub>max</sub> sin modificar K<sub>m</sub>.</li>
+                <li><strong>Modelo Tridimensional Estérico:</strong> Observá la representación esquemática del bloqueo directo del sitio activo frente a la deformación alostérica.</li>
+                <li><strong>Casos Clínicos & Biomarcadores Séricos:</strong> Resolvé casos de <em>Rabdomiólisis post-ejercicio extenuante</em>, <em>Injuria muscular aguda / Desgarro</em>, <em>Infarto agudo de miocardio</em> y <em>Citólisis hepática</em> analizando la elevación sérica de <strong>CPK, ALT, AST y Lipasa</strong> con retroalimentación formativa inmediata.</li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="border-t border-gray-100 pt-3">
+          <h4 class="font-bold text-accent text-sm mb-1 flex items-center gap-2">
+            <i class="fa-solid fa-graduation-cap"></i> 3. Criterio de Evaluación y Apoyo Teórico
+          </h4>
+          <p>
+            El simulador está diseñado para el aprendizaje autónomo formativo: no aplica penalizaciones numéricas y provee explicaciones fisiológicas exhaustivas ante cada opción seleccionada. Podés consultar el <strong>Vademécum</strong> en la cabecera en cualquier momento para revisar conceptos teóricos y fórmulas.
+          </p>
+        </div>
+      </div>
+      
+      <div class="p-4 bg-gray-50 border-t border-gray-100 flex justify-end">
+        <button onclick="closeTutorial()" class="px-5 py-2.5 bg-accent hover:bg-accent-hover text-white text-xs font-semibold rounded-xl shadow-sm transition">
+          ¡Entendido, comenzar el simulador!
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Notification Banner (Toast) -->
+  <div id="toast-notification" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 max-w-sm bg-slate-900 text-white px-4 py-3 rounded-xl shadow-xl flex items-center space-x-3 border border-slate-700 pointer-events-none text-xs">
+    <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
+    <span id="toast-msg">Mensaje del sistema</span>
+  </div>
+
+  <!-- Footer Institucional Oficial UCCuyo -->
+  <footer class="bg-white border-t border-gray-200 py-3 text-center text-xs text-gray-500 font-medium">
+    Desarrollado por vesalio - Todos los derechos reservados
+  </footer>
+
+
+  <!-- ================= JAVASCRIPT LOGIC ENGINE ================= -->
+  <script>
+    /* ========================================================================= */
+    /* GLOBAL STATE & CONSTANTS                                                  */
+    /* ========================================================================= */
+    const state = {
+      activeTab: 'tab-anatomy',
+      // Module 1: Lock & Key
+      enzymeStep: 0, // 0: E libre, 1: Acoplamiento ES, 2: Catálisis e hidrólisis, 3: Liberación Productos
+      hasCofactor: true,
+      autoCycleInterval: null,
+      // Module 2: Energy & Barrier
+      catalystActive: true,
+      substrateParticles: [],
+      productParticles: [],
+      // Module 3: 7 Classes
+      selectedClassIndex: 0,
+      // Module 4: Kinetics
+      temperature: 37,
+      pH: 7.4,
+      substrateConc: 25,
+      // Module 5: Inhibition & Clinical
+      inhibitorType: 'none',
+      currentCase: 'iam'
+    };
+
+    // The 7 International Enzyme Classes (EC 1-7) Data
+    const ENZYME_CLASSES = [
+      {
+        ec: 'EC 1',
+        name: 'Oxidorreductasas',
+        icon: 'fa-bolt',
+        desc: 'Catalizan reacciones de óxido-reducción mediante la transferencia de electrones, hidruros o protones entre sustratos biológicos.',
+        reaction: 'A(red) + B(ox) &#8644; A(ox) + B(red)',
+        example: 'Lactato Deshidrogenasa (LDH)',
+        substrate: 'Piruvato + NADH',
+        cofactor: 'NAD+ / FAD',
+        bioTitle: 'Kinesiología & Daño Celular',
+        bioDesc: 'La LDH reconvierte piruvato en lactato en el músculo esquelético hipóxico. Su elevación en plasma refleja fatiga extrema o isquemia tisular.'
+      },
+      {
+        ec: 'EC 2',
+        name: 'Transferasas',
+        icon: 'fa-right-left',
+        desc: 'Transfieren grupos funcionales específicos (metilo, amino, fosfato, acilo) de una molécula dadora a una aceptora.',
+        reaction: 'A-X + B &#8644; A + B-X',
+        example: 'Creatina Quinasa (CPK) y ALT/AST',
+        substrate: 'Creatina + ATP',
+        cofactor: 'Mg2+ / Piridoxal Fosfato (PLP)',
+        bioTitle: 'Medicina Deportiva & Cardiología',
+        bioDesc: 'La CPK fosforila la creatina para regenerar ATP ultrarrápido en el miocito muscular. Clave en el diagnóstico de rabdomiólisis e infarto.'
+      },
+      {
+        ec: 'EC 3',
+        name: 'Hidrolasas',
+        icon: 'fa-droplet-slash',
+        desc: 'Rompen enlaces covalentes (C-O, C-N, C-C, glicosídicos, éster) mediante la incorporación de una molécula de agua (hidrólisis).',
+        reaction: 'A-B + H2O &#8644; A-OH + B-H',
+        example: 'Lactasa, Lipasa Pancreática',
+        substrate: 'Lactosa + H2O',
+        cofactor: 'Generalmente no requieren o usan Zn2+/Ca2+',
+        bioTitle: 'Gastroenterología & Fisiología',
+        bioDesc: 'La deficiencia de lactasa genera intolerancia a la lactosa. La amilasa y lipasa elevadas en suero diagnostican pancreatitis aguda.'
+      },
+      {
+        ec: 'EC 4',
+        name: 'Liasas',
+        icon: 'fa-scissors',
+        desc: 'Escinden enlaces covalentes por mecanismos distintos a la hidrólisis o redox, frecuentemente generando dobles enlaces o anillos.',
+        reaction: 'A-B &#8644; A = B + X',
+        example: 'Anhidrasa Carbónica (CA)',
+        substrate: 'H2CO3 &#8644; CO2 + H2O',
+        cofactor: 'Zn2+ coordinado en sitio activo',
+        bioTitle: 'Fisiología Respiratoria & Kinesioterapia',
+        bioDesc: 'Regula el transporte eritrocitario de dióxido de carbono y el equilibrio ácido-base arterial durante el ejercicio submáximo.'
+      },
+      {
+        ec: 'EC 5',
+        name: 'Isomerasas',
+        icon: 'fa-rotate',
+        desc: 'Reordenan geométricamente o espacialmente los átomos dentro de la misma molécula, produciendo isómeros ópticos o estructurales.',
+        reaction: 'A &#8644; Iso-A',
+        example: 'Fosfoglucosa Isomerasa',
+        substrate: 'Glucosa-6-P &#8644; Fructosa-6-P',
+        cofactor: 'Mg2+',
+        bioTitle: 'Bioenergética Muscular',
+        bioDesc: 'Paso 2 de la glucólisis que prepara el combustible glucídico necesario para la contracción de sarcómeros en kinesiología.'
+      },
+      {
+        ec: 'EC 6',
+        name: 'Ligasas',
+        icon: 'fa-link',
+        desc: 'Unen dos moléculas covalentemente mediante condensación, acoplada directamente a la hidrólisis de enlaces de alta energía (ATP/GTP).',
+        reaction: 'A + B + ATP &#8644; A-B + ADP + Pi',
+        example: 'Piruvato Carboxilasa',
+        substrate: 'Piruvato + CO2 + ATP',
+        cofactor: 'Biotina (Vit B7) + Mn2+/Mg2+',
+        bioTitle: 'Gluconeogénesis Hepática',
+        bioDesc: 'Regeneración hepática de glucosa durante el ayuno o la recuperación post-entrenamiento extenuante en deportistas.'
+      },
+      {
+        ec: 'EC 7',
+        name: 'Translocasas',
+        icon: 'fa-arrows-split-up-and-left',
+        desc: 'Catalizan el transporte coordinado de iones o macromoléculas a través de membranas biológicas lipídicas.',
+        reaction: 'Ion(lado 1) + ATP &#8644; Ion(lado 2) + ADP',
+        example: 'Bomba Na+/K+ ATPasa',
+        substrate: '3 Na+(in) + 2 K+(out) + ATP',
+        cofactor: 'Mg2+',
+        bioTitle: 'Fisiología Neuromuscular & Kinesiología',
+        bioDesc: 'Mantiene el potencial de reposo transmembrana (-70 mV) en neuronas motoras y fibras musculares, vital para la excitabilidad.'
+      }
+    ];
+
+    // Clinical Cases Data
+    const CLINICAL_CASES = {
+      iam: {
+        title: 'Historia Clínica: Caso 1 (Cardiología / Urgencias)',
+        tag: 'Sospecha: Cardiopatía Isquémica Aguda',
+        narrative: 'Varón de 58 años, hipertenso y tabaquista, consulta por dolor precordial retroesternal súbito, opresivo, irradiado a hombro y mandíbula izquierda de 4 horas de evolución, asociado a diaforesis fría.',
+        physico: 'La hipoxia por oclusión coronaria inhibe la cadena respiratoria mitocondrial. La falta de ATP rompe la integridad del sarcolema miocárdico, liberando masivamente CPK-MB y troponinas al plasma.',
+        correct: 'iam',
+        values: [550, 68, 110, 32, 28], // [CPK Total, CPK-MB, AST, ALT, Lipasa]
+        refs: ['550 UI/L (Alto)', '68 UI/L (Elevadísimo)', '110 UI/L (Moderado)', '32 UI/L (Normal)']
+      },
+      rabdo: {
+        title: 'Historia Clínica: Caso 2 (Kinesiología & Deporte)',
+        tag: 'Sospecha: Daño Muscular Esquelético Masivo',
+        narrative: 'Maratonista aficionado de 34 años finaliza competencia bajo 33°C. Presenta mialgias incapacitantes generalizadas en cuádriceps y gemelos, calambres severos, astenia extrema y orina color té oscuro (coluria/mioglobinuria).',
+        physico: 'El esfuerzo excéntrico excesivo provoca microtrauma del sarcolema en fibras musculares esqueléticas con colapso de la homeostasis de Ca2+, liberando masivamente CPK total citosólica y AST a sangre.',
+        correct: 'rabdo',
+        values: [14200, 18, 380, 75, 22],
+        refs: ['14,200 UI/L (Masivo)', '18 UI/L (Normal <5%)', '380 UI/L (Muy alto)', '75 UI/L (Leve)']
+      },
+      hepatitis: {
+        title: 'Historia Clínica: Caso 3 (Gastroenterología / Toxicología)',
+        tag: 'Sospecha: Daño Hepatocelular Agudo',
+        narrative: 'Mujer de 42 años tratada con dosis excesivas de paracetamol e ingesta alcohólica. Consulta por dolor en hipocondrio derecho, náuseas, astenia marcada, ictericia escleral y orina colúrica.',
+        physico: 'El metabolito reactivo NAPQI agota el glutatión hepático, induciendo estrés oxidativo y lisis de la membrana de los hepatocitos. Las transaminasas ALT (específica de hígado) y AST se disparan en suero.',
+        correct: 'hepatitis',
+        values: [120, 8, 1150, 1480, 35],
+        refs: ['120 UI/L (Normal)', '8 UI/L (Normal)', '1,150 UI/L (Crítico)', '1,480 UI/L (Crítico ALT>AST)']
+      },
+      pancreatitis: {
+        title: 'Historia Clínica: Caso 4 (Urgencias Digestivas)',
+        tag: 'Sospecha: Pancreatitis Aguda Litiásica',
+        narrative: 'Mujer de 49 años con antecedentes de colelitiasis. Presenta dolor epigástrico lacerante irradiado en cinturón hacia el dorso tras ingesta copiosa rica en grasas, con vómitos biliosos reiterados.',
+        physico: 'La obstrucción de la ampolla de Vater por un cálculo biliar genera reflujo y activación prematura intrapancreática de zimógenos. La autodigestión celular vierte lipasa y amilasa a la circulación.',
+        correct: 'pancreatitis',
+        values: [90, 6, 65, 48, 860],
+        refs: ['90 UI/L (Normal)', '6 UI/L (Normal)', '65 UI/L (Leve)', 'Lipasa: 860 UI/L (x8)']
+      }
+    };
+
+    /* Chart instances holder */
+    let chartInstances = {
+      mm: null,
+      temp: null,
+      ph: null,
+      inhibitionCurve: null,
+      clinicalBar: null
+    };
+
+    /* ========================================================================= */
+    /* INITIALIZATION ON WINDOW LOAD                                             */
+    /* ========================================================================= */
+    window.onload = function () {
+      initNavigation();
+      initLockAndKeyCanvas();
+      initEnergyAndBarrier();
+      renderClassesGrid();
+      initKineticsCharts();
+      initInhibitionCanvas();
+      initClinicalCaseView();
+      
+      // Auto-resize handling for clean responsiveness
+      window.addEventListener('resize', () => {
+        resizeAllCanvases();
+      });
+    };
+
+    function resizeAllCanvases() {
+      // Repaint canvases if needed
+      drawLockKeyScene();
+      drawEnergyCoordinateCurve();
+      drawInhibitionStericScene();
+    }
+
+    /* ========================================================================= */
+    /* NAVIGATION LOGIC                                                          */
+    /* ========================================================================= */
+    function initNavigation() {
+      // Setup main nav tabs
+    }
+
+    function switchTab(tabId) {
+      state.activeTab = tabId;
+
+      // Hide all tab contents
+      document.querySelectorAll('.tab-content').forEach(el => {
+        el.classList.add('hidden');
+        el.classList.remove('block');
+      });
+
+      // Show selected tab content
+      const target = document.getElementById(tabId);
+      if (target) {
+        target.classList.remove('hidden');
+        target.classList.add('block');
+      }
+
+      // Update sidebar nav buttons
+      const navButtons = [
+        { id: 'nav-tab-anatomy', tab: 'tab-anatomy' },
+        { id: 'nav-tab-energy', tab: 'tab-energy' },
+        { id: 'nav-tab-classes', tab: 'tab-classes' },
+        { id: 'nav-tab-kinetics', tab: 'tab-kinetics' },
+        { id: 'nav-tab-clinical', tab: 'tab-clinical' }
+      ];
+
+      navButtons.forEach(btn => {
+        const el = document.getElementById(btn.id);
+        if (el) {
+          if (btn.tab === tabId) {
+            el.className = 'bg-accent text-white flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-sm font-semibold transition shadow-sm flex items-center gap-2';
+          } else {
+            el.className = 'text-gray-700 hover:bg-gray-100 flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-sm font-medium transition flex items-center gap-2';
+          }
+        }
+      });
+
+      // Trigger canvas and chart redraws for newly visible tab
+      setTimeout(() => {
+        if (tabId === 'tab-anatomy') {
+          drawLockKeySimulation();
+        } else if (tabId === 'tab-energy') {
+          if (ecCanvas) fitCanvasResolution(ecCanvas);
+          drawEnergyCoordinateCurve();
+          if (pbCanvas) fitCanvasResolution(pbCanvas);
+          if (!state.substrateParticles || state.substrateParticles.length === 0) {
+            initBarrierParticles();
+          }
+        } else if (tabId === 'tab-classes') {
+          renderClassesGrid();
+        } else if (tabId === 'tab-kinetics') {
+          if (charts.temp) charts.temp.resize();
+          if (charts.ph) charts.ph.resize();
+          if (charts.saturation) charts.saturation.resize();
+          updateKineticsSimulation();
+        } else if (tabId === 'tab-clinical') {
+          if (charts.inhibition) charts.inhibition.resize();
+          if (charts.biomarkers) charts.biomarkers.resize();
+          drawInhibitorMolecularModel();
+        }
+      }, 60);
+    }
+
+    /* Funciones para Modales Institucionales */
+    function openFormulasModal() {
+      const m = document.getElementById('modal-formulas');
+      if (m) m.classList.remove('hidden');
+    }
+
+    function closeFormulasModal() {
+      const m = document.getElementById('modal-formulas');
+      if (m) m.classList.add('hidden');
+    }
+
+    function openTutorial() {
+      const m = document.getElementById('modal-tutorial');
+      if (m) m.classList.remove('hidden');
+    }
+
+    function closeTutorial() {
+      const m = document.getElementById('modal-tutorial');
+      if (m) m.classList.add('hidden');
+    }
+
+    function openVademecumModal() { openFormulasModal(); }
+    function closeVademecumModal() { closeFormulasModal(); }
+    function openTutorialModal() { openTutorial(); }
+    function closeTutorialModal() { closeTutorial(); }
+
+    // Compatibilidad retroactiva
+    function openInfoModal() { openVademecumModal(); }
+    function closeInfoModal() { closeVademecumModal(); }
+
+    /* ========================================================================= */
+    /* MODULE 1: ANATOMÍA MOLECULAR & MODELO LLAVE-CERRADURA                    */
+    /* ========================================================================= */
+    let lkCanvas, lkCtx;
+
+    function initLockAndKeyCanvas() {
+      lkCanvas = document.getElementById('lockKeyCanvas');
+      if (!lkCanvas) return;
+      lkCtx = lkCanvas.getContext('2d');
+      fitCanvasResolution(lkCanvas);
+      drawLockKeyScene();
+    }
+
+    function fitCanvasResolution(canvas) {
+      if (!canvas) return;
+      const rect = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      const displayWidth = rect.width || canvas.clientWidth || 300;
+      const displayHeight = rect.height || canvas.clientHeight || 200;
+      canvas.width = Math.round(displayWidth * dpr);
+      canvas.height = Math.round(displayHeight * dpr);
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.resetTransform ? ctx.resetTransform() : ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.scale(dpr, dpr);
+      }
+    }
+
+    function drawLockKeyScene() {
+      if (!lkCanvas) return;
+      fitCanvasResolution(lkCanvas);
+      const w = lkCanvas.getBoundingClientRect().width;
+      const h = lkCanvas.getBoundingClientRect().height;
+      const ctx = lkCtx;
+
+      ctx.clearRect(0, 0, w, h);
+
+      // Center baseline
+      const cx = w * 0.45;
+      const cy = h * 0.55;
+
+      // 1. Draw Apoenzyme Body (Deep navy blue macromolecule with custom active pocket)
+      ctx.save();
+      ctx.fillStyle = state.hasCofactor ? '#0284c7' : '#475569'; // cyan-600 or greyed out
+      ctx.strokeStyle = state.hasCofactor ? '#38bdf8' : '#94a3b8';
+      ctx.lineWidth = 3;
+
+      // Enzyme contour with active site notch at top
+      ctx.beginPath();
+      // Main rounded bean shape
+      ctx.moveTo(cx - 130, cy);
+      ctx.bezierCurveTo(cx - 130, cy - 90, cx - 60, cy - 90, cx - 40, cy - 60);
+
+      // Active site notch (The Lock - Fischer Lock & Key Geometry)
+      // Specific complementary notched cleft: rectangular/trapezoidal notch for lactose
+      ctx.lineTo(cx - 30, cy - 20);
+      ctx.lineTo(cx - 15, cy - 20);
+      ctx.lineTo(cx - 15, cy - 5);
+      ctx.lineTo(cx + 15, cy - 5);
+      ctx.lineTo(cx + 15, cy - 20);
+      ctx.lineTo(cx + 30, cy - 20);
+      ctx.lineTo(cx + 40, cy - 60);
+
+      ctx.bezierCurveTo(cx + 60, cy - 90, cx + 130, cy - 90, cx + 130, cy);
+      ctx.bezierCurveTo(cx + 130, cy + 90, cx - 130, cy + 90, cx - 130, cy);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      // Label on enzyme body
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 13px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('Lactasa (Apoenzima)', cx, cy + 45);
+      ctx.font = '10px Inter, sans-serif';
+      ctx.fillStyle = '#bae6fd';
+      ctx.fillText(state.hasCofactor ? 'Conformación Activa' : 'Inactiva (Sin Mg<sup>2</sup><sup>+</sup>)', cx, cy + 62);
+
+      // 2. Allosteric Regulatory Site on bottom right
+      ctx.beginPath();
+      ctx.arc(cx + 100, cy + 30, 16, 0, Math.PI * 2);
+      ctx.fillStyle = '#f59e0b';
+      ctx.fill();
+      ctx.strokeStyle = '#d97706';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.fillStyle = '#1e293b';
+      ctx.font = 'bold 8px Inter, sans-serif';
+      ctx.fillText('Sitio', cx + 100, cy + 28);
+      ctx.fillText('Alostérico', cx + 100, cy + 38);
+
+      // 3. Cofactor Mg2+ indicator if enabled
+      if (state.hasCofactor) {
+        ctx.beginPath();
+        ctx.arc(cx - 70, cy - 20, 14, 0, Math.PI * 2);
+        ctx.fillStyle = '#10b981';
+        ctx.fill();
+        ctx.strokeStyle = '#059669';
+        ctx.stroke();
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 9px Inter, sans-serif';
+        ctx.fillText('Mg<sup>2</sup><sup>+</sup>', cx - 70, cy - 16);
+      }
+
+      ctx.restore();
+
+      // 4. Substrate / Complex / Products based on state.enzymeStep
+      // Step 0: Lactose hovering above (Unbound E + S)
+      // Step 1: Lactose docked in active site (ES Complex)
+      // Step 2: Transition / Cleavage happening with water H2O
+      // Step 3: Glucose + Galactose releasing (E + P1 + P2)
+      
+      const step = state.enzymeStep;
+      ctx.save();
+
+      if (step === 0) {
+        // Floating Lactose Substrate (Disaccharide: 2 rings linked)
+        const subX = cx;
+        const subY = cy - 110;
+        drawLactoseMolecule(ctx, subX, subY, 'Lactosa (Sustrato)');
+      } else if (step === 1) {
+        // Docked in the active site (ES Complex)
+        const subX = cx;
+        const subY = cy - 25;
+        drawLactoseMolecule(ctx, subX, subY, 'Complejo [ES]');
+        // Active site interaction lines (hydrogen bonds)
+        ctx.strokeStyle = '#38bdf8';
+        ctx.setLineDash([3, 3]);
+        ctx.lineWidth = 2;
+        ctx.strokeRect(cx - 35, cy - 35, 70, 40);
+      } else if (step === 2) {
+        // Transition State & Hydrolysis (Water entering, bond breaking)
+        const subX = cx;
+        const subY = cy - 25;
+        drawLactoseMolecule(ctx, subX, subY, 'Estado de Transición &#8225;', true);
+        // H2O addition tag
+        ctx.fillStyle = '#38bdf8';
+        ctx.font = 'bold 11px Inter, sans-serif';
+        ctx.fillText('+ H<sub>2</sub>O (Hidrólisis)', cx, cy - 65);
+      } else if (step === 3) {
+        // Separated Products: Glucose (left) and Galactose (right) flying away
+        drawMonosaccharide(ctx, cx - 60, cy - 110, '#10b981', 'Glucosa (P<sub>1</sub>)');
+        drawMonosaccharide(ctx, cx + 60, cy - 110, '#3b82f6', 'Galactosa (P<sub>2</sub>)');
+      }
+
+      ctx.restore();
+    }
+
+    function drawLactoseMolecule(ctx, x, y, label, isTransition = false) {
+      ctx.save();
+      // Draw 2 connected hexagonal glucosyl / galactosyl units
+      ctx.fillStyle = isTransition ? '#f43f5e' : '#f59e0b';
+      ctx.strokeStyle = '#b45309';
+      ctx.lineWidth = 2;
+
+      // Ring 1 (Galactose)
+      drawHexagon(ctx, x - 18, y, 14);
+      // Ring 2 (Glucose)
+      drawHexagon(ctx, x + 18, y, 14);
+
+      // Glycosidic Bond (beta-1,4)
+      ctx.strokeStyle = isTransition ? '#e11d48' : '#78350f';
+      ctx.lineWidth = isTransition ? 1 : 3;
+      if (isTransition) ctx.setLineDash([2, 2]);
+      ctx.beginPath();
+      ctx.moveTo(x - 5, y);
+      ctx.lineTo(x + 5, y);
+      ctx.stroke();
+
+      // Text label
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 10px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(label, x, y - 22);
+
+      ctx.restore();
+    }
+
+    function drawMonosaccharide(ctx, x, y, color, label) {
+      ctx.save();
+      ctx.fillStyle = color;
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 2;
+      drawHexagon(ctx, x, y, 15);
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 10px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(label, x, y - 20);
+      ctx.restore();
+    }
+
+    function drawHexagon(ctx, x, y, radius) {
+      ctx.beginPath();
+      for (let i = 0; i < 6; i++) {
+        const angle = (Math.PI / 3) * i;
+        const hx = x + radius * Math.cos(angle);
+        const hy = y + radius * Math.sin(angle);
+        if (i === 0) ctx.moveTo(hx, hy);
+        else ctx.lineTo(hx, hy);
+      }
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+    }
+
+    function advanceEnzymeStep() {
+      if (!state.hasCofactor && state.enzymeStep === 0) {
+        showToast('¡Apoenzima inactiva! Requiere cofactor Mg<sup>2</sup><sup>+</sup> para acoplar el sustrato.', 'warn');
+        return;
+      }
+
+      state.enzymeStep = (state.enzymeStep + 1) % 4;
+      updateEnzymeStepUI();
+      drawLockKeyScene();
+    }
+
+    function resetEnzymeReaction() {
+      if (state.autoCycleInterval) {
+        clearInterval(state.autoCycleInterval);
+        state.autoCycleInterval = null;
+        document.getElementById('auto-cycle-text').innerText = 'Auto-Reproducción';
+      }
+      state.enzymeStep = 0;
+      updateEnzymeStepUI();
+      drawLockKeyScene();
+    }
+
+    function toggleAutoCycle() {
+      const btnText = document.getElementById('auto-cycle-text');
+      if (state.autoCycleInterval) {
+        clearInterval(state.autoCycleInterval);
+        state.autoCycleInterval = null;
+        btnText.innerText = 'Auto-Reproducción';
+      } else {
+        btnText.innerText = 'Pausar Ciclo';
+        state.autoCycleInterval = setInterval(() => {
+          advanceEnzymeStep();
+        }, 1600);
+      }
+    }
+
+    function toggleCofactorState(checkbox) {
+      state.hasCofactor = !checkbox.checked; // checked means simulate deficiency
+      const desc = document.getElementById('cofactor-status-desc');
+      if (!state.hasCofactor) {
+        desc.innerText = '¡Deficiencia de Mg<sup>2</sup><sup>+</sup>! La apoenzima pierde conformación catalítica activa.';
+        desc.className = 'text-[11px] text-rose-500 font-semibold mt-1.5';
+        showToast('Cofactor ausente: la enzima queda en estado de apoenzima inerte.', 'warn');
+      } else {
+        desc.innerText = 'Cofactor presente: La apoenzima se pliega de manera óptima permitiendo la catálisis.';
+        desc.className = 'text-[11px] text-slate-400 mt-1.5';
+      }
+      drawLockKeyScene();
+    }
+
+    function updateEnzymeStepUI() {
+      const step = state.enzymeStep;
+      const tag = document.getElementById('cycle-state-tag');
+      const btnText = document.getElementById('btn-step-text');
+      const desc = document.getElementById('step-description-box');
+      const timer = document.getElementById('micro-timer');
+
+      const stepsInfo = [
+        {
+          tag: 'Estado 1: Enzima Libre (E)',
+          tagClass: 'bg-emerald-100 text-emerald-800',
+          btn: 'Acoplar Sustrato (E + S &#8594; ES)',
+          timer: 'Tiempo: 0.00 ms',
+          desc: '<strong>Paso 1: Estado Libre.</strong> La lactasa presenta su hendidura catalítica (sitio activo) tridimensional con cadenas laterales de aminoácidos (Glu y Asp) listas para interactuar con la lactosa mediante puentes de hidrógeno específicos.'
+        },
+        {
+          tag: 'Estado 2: Complejo Enzima-Sustrato [ES]',
+          tagClass: 'bg-purple-100 text-purple-800',
+          btn: 'Iniciar Catálisis (Hidrólisis)',
+          timer: 'Tiempo: 0.12 ms',
+          desc: '<strong>Paso 2: Formación del Complejo [ES].</strong> Especificidad estérica absoluta (Fischer). El enlace glicosídico &beta;-1,4 queda alineado exactamente frente al residuo catalítico ácido-base.'
+        },
+        {
+          tag: 'Estado 3: Estado de Transición [ES&#8225;]',
+          tagClass: 'bg-rose-100 text-rose-800',
+          btn: 'Liberar Productos (ES &#8594; E + P)',
+          timer: 'Tiempo: 0.35 ms',
+          desc: '<strong>Paso 3: Estabilización del Estado de Transición.</strong> Se adiciona una molécula de agua (H<sub>2</sub>O) para escindir el enlace glicosídico. La enzima distorsiona la conformación de la lactosa disminuyendo la barrera de energía.'
+        },
+        {
+          tag: 'Estado 4: Liberación de Productos (P<sub>1</sub> + P<sub>2</sub>)',
+          tagClass: 'bg-cyan-100 text-cyan-800',
+          btn: 'Reiniciar Ciclo Catalítico',
+          timer: 'Tiempo: 0.85 ms',
+          desc: '<strong>Paso 4: Regeneración de la Enzima Libre.</strong> Se liberan la D-Glucosa y D-Galactosa. La lactasa recupera su conformación original intacta para catalizar miles de ciclos por segundo sin consumirse.'
+        }
+      ];
+
+      const cur = stepsInfo[step];
+      tag.className = `px-2.5 py-0.5 rounded-full text-xs font-semibold ${cur.tagClass}`;
+      tag.innerText = cur.tag;
+      btnText.innerText = cur.btn;
+      timer.innerText = cur.timer;
+      desc.innerHTML = cur.desc;
+    }
+
+    /* ========================================================================= */
+    /* MODULE 2: BIOENERGÉTICA Y BARRERA DE ENERGÍA DE ACTIVACIÓN (E<sub>a</sub>)        */
+    /* ========================================================================= */
+    let ecCanvas, ecCtx;
+    let pbCanvas, pbCtx;
+
+    function initEnergyAndBarrier() {
+      ecCanvas = document.getElementById('energyCurveCanvas');
+      if (ecCanvas) {
+        ecCtx = ecCanvas.getContext('2d');
+        fitCanvasResolution(ecCanvas);
+        drawEnergyCoordinateCurve();
+      }
+
+      pbCanvas = document.getElementById('particleBarrierCanvas');
+      if (pbCanvas) {
+        pbCtx = pbCanvas.getContext('2d');
+        fitCanvasResolution(pbCanvas);
+        initBarrierParticles();
+        requestAnimationFrame(renderBarrierParticlesLoop);
+      }
+    }
+
+    function drawEnergyCoordinateCurve() {
+      if (!ecCanvas) return;
+      fitCanvasResolution(ecCanvas);
+      const w = ecCanvas.getBoundingClientRect().width;
+      const h = ecCanvas.getBoundingClientRect().height;
+      const ctx = ecCtx;
+
+      ctx.clearRect(0, 0, w, h);
+
+      // Coordinate axes
+      const ox = 50;
+      const oy = h - 45;
+      const axW = w - 80;
+      const axH = h - 70;
+
+      ctx.strokeStyle = '#475569';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(ox, oy - axH);
+      ctx.lineTo(ox, oy);
+      ctx.lineTo(ox + axW, oy);
+      ctx.stroke();
+
+      // Axis labels
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '10px Inter, sans-serif';
+      ctx.fillText('Energía Libre (G)', ox - 10, oy - axH - 10);
+      ctx.fillText('Coordenada de Reacción (Reactivos &#8594; Productos)', ox + axW * 0.35, oy + 25);
+
+      // Reaction levels
+      const gReactants = oy - 80; // S level
+      const gProducts = oy - 40;  // P level (Exergonic reaction: Products lower than reactants)
+      const gPeakUncat = oy - axH + 15; // Uncatalyzed transition state (very high)
+      const gPeakCat = oy - axH + 75;   // Catalyzed transition state (much lower!)
+
+      // Reactant & Product Plateaus
+      ctx.strokeStyle = '#cbd5e1';
+      ctx.lineWidth = 2;
+      // Reactant plateau
+      ctx.beginPath();
+      ctx.moveTo(ox, gReactants);
+      ctx.lineTo(ox + 50, gReactants);
+      ctx.stroke();
+      ctx.fillStyle = '#f8fafc';
+      ctx.font = 'bold 11px Inter, sans-serif';
+      ctx.fillText('Sustrato (S)', ox + 5, gReactants - 10);
+
+      // Product plateau
+      ctx.beginPath();
+      ctx.moveTo(ox + axW - 60, gProducts);
+      ctx.lineTo(ox + axW, gProducts);
+      ctx.stroke();
+      ctx.fillText('Productos (P)', ox + axW - 75, gProducts - 10);
+
+      // 1. Uncatalyzed Curve (Red)
+      ctx.beginPath();
+      ctx.moveTo(ox + 50, gReactants);
+      ctx.bezierCurveTo(ox + 120, gReactants - 10, ox + axW * 0.45 - 60, gPeakUncat, ox + axW * 0.45, gPeakUncat);
+      ctx.bezierCurveTo(ox + axW * 0.45 + 60, gPeakUncat, ox + axW - 120, gProducts - 10, ox + axW - 60, gProducts);
+      ctx.strokeStyle = '#f43f5e'; // rose-500
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      // 2. Catalyzed Curve (Cyan)
+      ctx.beginPath();
+      ctx.moveTo(ox + 50, gReactants);
+      ctx.bezierCurveTo(ox + 100, gReactants - 5, ox + axW * 0.45 - 50, gPeakCat, ox + axW * 0.45, gPeakCat);
+      ctx.bezierCurveTo(ox + axW * 0.45 + 50, gPeakCat, ox + axW - 100, gProducts - 5, ox + axW - 60, gProducts);
+      ctx.strokeStyle = '#06b6d4'; // cyan-500
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      // Activation energy arrows & delta G
+      ctx.save();
+      ctx.setLineDash([2, 3]);
+      ctx.strokeStyle = '#64748b';
+
+      // Line at reactant level across
+      ctx.beginPath();
+      ctx.moveTo(ox + 50, gReactants);
+      ctx.lineTo(ox + axW * 0.65, gReactants);
+      ctx.stroke();
+
+      // Ea uncatalyzed arrow
+      drawDoubleArrow(ctx, ox + axW * 0.35, gReactants, ox + axW * 0.35, gPeakUncat, '#f43f5e', 'Ea sin enzima');
+      // Ea catalyzed arrow
+      drawDoubleArrow(ctx, ox + axW * 0.55, gReactants, ox + axW * 0.55, gPeakCat, '#06b6d4', 'Ea con enzima');
+      // Delta G arrow
+      drawDoubleArrow(ctx, ox + axW - 30, gReactants, ox + axW - 30, gProducts, '#10b981', '&Delta;G constante');
+
+      ctx.restore();
+    }
+
+    function drawDoubleArrow(ctx, x1, y1, x2, y2, color, label) {
+      ctx.save();
+      ctx.strokeStyle = color;
+      ctx.fillStyle = color;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.stroke();
+
+      // arrowheads
+      ctx.beginPath();
+      ctx.arc(x1, y1, 2.5, 0, Math.PI * 2);
+      ctx.arc(x2, y2, 2.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // label
+      ctx.font = 'bold 9px Inter, sans-serif';
+      ctx.fillText(label, Math.max(x1, x2) + 6, (y1 + y2) / 2 + 3);
+      ctx.restore();
+    }
+
+    /* Particle Crossing Kinetic Simulator */
+    function initBarrierParticles() {
+      state.substrateParticles = [];
+      state.productParticles = [];
+      for (let i = 0; i < 40; i++) {
+        state.substrateParticles.push({
+          x: Math.random() * 120 + 20,
+          y: Math.random() * 120 + 40,
+          vx: (Math.random() - 0.2) * 2.5,
+          vy: (Math.random() - 0.5) * 2,
+          energy: Math.random() * 50 + 10 // Kinetic energy
+        });
+      }
+    }
+
+    function renderBarrierParticlesLoop() {
+      if (!pbCanvas) return;
+      const w = pbCanvas.getBoundingClientRect().width || pbCanvas.clientWidth || 300;
+      const h = pbCanvas.getBoundingClientRect().height || pbCanvas.clientHeight || 220;
+      const ctx = pbCtx;
+      if (!ctx || w === 0 || h === 0) {
+        requestAnimationFrame(renderBarrierParticlesLoop);
+        return;
+      }
+
+      ctx.clearRect(0, 0, w, h);
+
+      // Central Energy Barrier
+      const barrierX = w * 0.5;
+      const barrierHeight = state.catalystActive ? h * 0.45 : h * 0.85;
+
+      // Draw barrier wall
+      ctx.fillStyle = state.catalystActive ? 'rgba(6, 182, 212, 0.25)' : 'rgba(244, 63, 94, 0.35)';
+      ctx.strokeStyle = state.catalystActive ? '#06b6d4' : '#f43f5e';
+      ctx.lineWidth = 2;
+      ctx.fillRect(barrierX - 8, h - barrierHeight, 16, barrierHeight);
+      ctx.strokeRect(barrierX - 8, h - barrierHeight, 16, barrierHeight);
+
+      // Barrier label
+      ctx.fillStyle = state.catalystActive ? '#38bdf8' : '#fda4af';
+      ctx.font = 'bold 9px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(state.catalystActive ? 'Barrera Baja (Con Enzima)' : 'Barrera Alta (Sin Enzima)', barrierX, h - barrierHeight - 8);
+
+      // Update and draw Substrate particles (left)
+      for (let i = state.substrateParticles.length - 1; i >= 0; i--) {
+        const p = state.substrateParticles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+
+        // Bounce left wall & top/bottom
+        if (p.x < 10) { p.x = 10; p.vx *= -1; }
+        if (p.y < 10) { p.y = 10; p.vy *= -1; }
+        if (p.y > h - 10) { p.y = h - 10; p.vy *= -1; }
+
+        // Barrier collision check
+        if (p.x + 5 >= barrierX - 8 && p.x - 5 <= barrierX + 8) {
+          // Can it cross? Must have sufficient kinetic energy to overcome current barrier height
+          const threshold = state.catalystActive ? 25 : 70;
+          if (p.energy > threshold && p.y < h - barrierHeight) {
+            // Crossed the barrier! Convert to product
+            p.x = barrierX + 15;
+            p.vx = Math.abs(p.vx) + 1; // acceleration
+            state.productParticles.push(p);
+            state.substrateParticles.splice(i, 1);
+            continue;
+          } else {
+            // Rebounded
+            p.vx *= -1;
+            p.x = barrierX - 12;
+          }
+        }
+
+        // Draw Substrate particle (Amber/Orange)
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+        ctx.fillStyle = '#f59e0b';
+        ctx.fill();
+      }
+
+      // Update and draw Product particles (right)
+      for (let i = 0; i < state.productParticles.length; i++) {
+        const p = state.productParticles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x > w - 10) { p.x = w - 10; p.vx *= -1; }
+        if (p.x < barrierX + 12) { p.x = barrierX + 12; p.vx *= -1; }
+        if (p.y < 10) { p.y = 10; p.vy *= -1; }
+        if (p.y > h - 10) { p.y = h - 10; p.vy *= -1; }
+
+        // Draw Product particle (Emerald Green)
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+        ctx.fillStyle = '#10b981';
+        ctx.fill();
+      }
+
+      // Update counts in DOM
+      const countSub = document.getElementById('count-substrates');
+      const countProd = document.getElementById('count-products');
+      if (countSub) countSub.innerText = state.substrateParticles.length;
+      if (countProd) countProd.innerText = state.productParticles.length;
+
+      requestAnimationFrame(renderBarrierParticlesLoop);
+    }
+
+    function toggleCatalystState() {
+      state.catalystActive = !state.catalystActive;
+      const btn = document.getElementById('toggle-catalyst-btn');
+      const desc = document.getElementById('catalyst-state-text');
+      const rate = document.getElementById('rate-barrier');
+
+      if (state.catalystActive) {
+        btn.innerText = 'Enzima: ACTIVA';
+        btn.className = 'px-3 py-1.5 bg-cyan-600 text-white rounded-lg font-bold text-xs shadow transition';
+        desc.innerText = 'Enzima activa: estabiliza el estado de transición y reduce drásticamente Ea';
+        rate.innerText = 'Alta (~10<sup>6</sup> x)';
+        rate.className = 'text-cyan-600 font-mono';
+      } else {
+        btn.innerText = 'Enzima: INACTIVA';
+        btn.className = 'px-3 py-1.5 bg-rose-600 text-white rounded-lg font-bold text-xs shadow transition';
+        desc.innerText = 'Sin catalizador: la inmensa mayoría de moléculas rebotan sin reaccionar';
+        rate.innerText = 'Nula / Despreciable';
+        rate.className = 'text-rose-600 font-mono';
+      }
+    }
+
+    function triggerMolecularBurst() {
+      // Add kinetic energy to all particles
+      state.substrateParticles.forEach(p => {
+        p.vx *= 1.8;
+        p.vy *= 1.8;
+        p.energy += 30;
+      });
+      // Replenish substrates if empty
+      if (state.substrateParticles.length < 15) {
+        for (let i = 0; i < 20; i++) {
+          state.substrateParticles.push({
+            x: Math.random() * 80 + 20,
+            y: Math.random() * 100 + 30,
+            vx: (Math.random() + 0.5) * 2,
+            vy: (Math.random() - 0.5) * 2,
+            energy: Math.random() * 60 + 20
+          });
+        }
+      }
+      showToast('¡Pulso de energía cinética térmica inyectado!', 'info');
+    }
+
+    /* ========================================================================= */
+    /* MODULE 3: LAS 7 CLASES INTERNACIONALES (EC 1 A 7)                         */
+    /* ========================================================================= */
+    function renderClassesGrid() {
+      const container = document.getElementById('class-cards-container');
+      if (!container) return;
+      container.innerHTML = '';
+
+      ENZYME_CLASSES.forEach((cls, idx) => {
+        const isSelected = idx === state.selectedClassIndex;
+        const card = document.createElement('button');
+        card.className = `p-3.5 rounded-xl text-left transition-all border ${
+          isSelected 
+            ? 'bg-cyan-600 text-white border-cyan-500 shadow-md scale-102 ring-2 ring-cyan-400/40' 
+            : 'bg-white text-slate-700 border-slate-200 hover:border-cyan-300 hover:bg-slate-50'
+        }`;
+        card.onclick = () => selectEnzymeClass(idx);
+
+        card.innerHTML = `
+          <div class="flex items-center justify-between">
+            <span class="font-mono text-[10px] font-bold ${isSelected ? 'text-cyan-200' : 'text-cyan-700'}">${cls.ec}</span>
+            <i class="fa-solid ${cls.icon} text-xs ${isSelected ? 'text-white' : 'text-slate-400'}"></i>
+          </div>
+          <span class="block text-xs font-bold mt-2 truncate">${cls.name}</span>
+          <span class="block text-[10px] mt-0.5 truncate ${isSelected ? 'text-slate-200' : 'text-slate-400'}">${cls.example.split(',')[0]}</span>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function selectEnzymeClass(index) {
+      state.selectedClassIndex = index;
+      renderClassesGrid();
+
+      const cls = ENZYME_CLASSES[index];
+      document.getElementById('selected-class-badge').innerText = cls.ec;
+      document.getElementById('selected-class-title').innerText = cls.name;
+      document.getElementById('selected-class-desc').innerText = cls.desc;
+      document.getElementById('selected-class-reaction').innerText = cls.reaction;
+      document.getElementById('selected-class-bio-title').innerText = cls.bioTitle;
+      document.getElementById('selected-class-bio-desc').innerHTML = cls.bioDesc;
+
+      document.getElementById('lab-enzyme-name').innerText = cls.example;
+      document.getElementById('lab-substrate-name').innerText = cls.substrate;
+      document.getElementById('lab-cofactor-name').innerText = cls.cofactor;
+
+      const cuvetteLiquid = document.getElementById('cuvette-liquid');
+      cuvetteLiquid.style.height = '35%';
+      cuvetteLiquid.className = 'w-full bg-cyan-500/70 transition-all duration-700 relative';
+      document.getElementById('cuvette-status').innerText = 'Listo para reacción';
+    }
+
+    function runClassReactionTest() {
+      const cls = ENZYME_CLASSES[state.selectedClassIndex];
+      const cuvette = document.getElementById('cuvette-liquid');
+      const status = document.getElementById('cuvette-status');
+
+      status.innerText = '¡Catálisis en curso!';
+      cuvette.style.height = '85%';
+      cuvette.className = 'w-full bg-emerald-500/80 transition-all duration-700 relative';
+
+      showToast(`Reacción catalizada con éxito por ${cls.name}: delta Absorbancia registrada.`, 'success');
+
+      setTimeout(() => {
+        status.innerText = 'Reacción completada (Equilibrio)';
+      }, 900);
+    }
+
+    /* ========================================================================= */
+    /* MODULE 4: CINÉTICA DE SATURACIÓN Y FACTORES AMBIENTALES                  */
+    /* ========================================================================= */
+    function initKineticsCharts() {
+      // 1. Michaelis-Menten Chart
+      const ctxMM = document.getElementById('mmChart');
+      if (ctxMM) {
+        chartInstances.mm = new Chart(ctxMM, {
+          type: 'line',
+          data: {
+            labels: generateSubstrateLabels(),
+            datasets: [
+              {
+                label: 'Velocidad V (&mu;mol/s)',
+                data: calculateMMData(),
+                borderColor: '#10b981',
+                backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                borderWidth: 2.5,
+                fill: true,
+                tension: 0.3,
+                pointRadius: 0
+              },
+              {
+                label: 'Punto Operativo Actual',
+                data: [{ x: state.substrateConc, y: calculateCurrentV() }],
+                borderColor: '#06b6d4',
+                backgroundColor: '#06b6d4',
+                pointRadius: 6,
+                pointHoverRadius: 8,
+                showLine: false
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              x: {
+                type: 'linear',
+                title: { display: true, text: 'Concentración de Sustrato [S] (&mu;M)', font: { size: 10 } },
+                min: 0,
+                max: 120
+              },
+              y: {
+                title: { display: true, text: 'Velocidad V (&mu;mol/s)', font: { size: 10 } },
+                min: 0,
+                max: 110
+              }
+            },
+            plugins: {
+              legend: { display: false }
+            }
+          }
+        });
+      }
+
+      // 2. Temperature Curve Chart
+      const ctxTemp = document.getElementById('tempChart');
+      if (ctxTemp) {
+        const temps = [];
+        const actTemps = [];
+        for (let t = 0; t <= 80; t += 2) {
+          temps.push(t);
+          actTemps.push(calculateTempActivity(t));
+        }
+
+        chartInstances.temp = new Chart(ctxTemp, {
+          type: 'line',
+          data: {
+            labels: temps,
+            datasets: [{
+              data: actTemps,
+              borderColor: '#f43f5e',
+              backgroundColor: 'rgba(244, 63, 94, 0.1)',
+              borderWidth: 2,
+              fill: true,
+              pointRadius: 0,
+              tension: 0.3
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              x: { title: { display: true, text: 'Temperatura (°C)', font: { size: 9 } } },
+              y: { display: false, min: 0 }
+            },
+            plugins: { legend: { display: false } }
+          }
+        });
+      }
+
+      // 3. pH Curve Chart
+      const ctxPH = document.getElementById('phChart');
+      if (ctxPH) {
+        const phs = [];
+        const actPH = [];
+        for (let p = 1; p <= 13; p += 0.25) {
+          phs.push(p.toFixed(1));
+          actPH.push(calculatePhActivity(p, 7.4));
+        }
+
+        chartInstances.ph = new Chart(ctxPH, {
+          type: 'line',
+          data: {
+            labels: phs,
+            datasets: [{
+              data: actPH,
+              borderColor: '#3b82f6',
+              backgroundColor: 'rgba(59, 130, 246, 0.1)',
+              borderWidth: 2,
+              fill: true,
+              pointRadius: 0,
+              tension: 0.3
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              x: { title: { display: true, text: 'pH', font: { size: 9 } } },
+              y: { display: false, min: 0 }
+            },
+            plugins: { legend: { display: false } }
+          }
+        });
+      }
+
+      updateKineticsSimulation();
+    }
+
+    function generateSubstrateLabels() {
+      const arr = [];
+      for (let s = 0; s <= 120; s += 2) arr.push(s);
+      return arr;
+    }
+
+    function calculateMMData() {
+      const Vmax = 100;
+      const Km = 20;
+      const pts = [];
+      for (let s = 0; s <= 120; s += 2) {
+        const v = (Vmax * s) / (Km + s);
+        pts.push({ x: s, y: v });
+      }
+      return pts;
+    }
+
+    function calculateCurrentV() {
+      const Vmax = 100;
+      const Km = 20;
+      const s = state.substrateConc;
+      // Basic Michaelis-Menten rate
+      let baseV = (Vmax * s) / (Km + s);
+
+      // Temperature factor (bell shaped around 37C with steep denaturation > 42C)
+      const tFactor = calculateTempActivity(state.temperature) / 100;
+
+      // pH factor (bell shaped around physiological pH ~ 7.4)
+      const phFactor = calculatePhActivity(state.pH, 7.4) / 100;
+
+      const finalV = baseV * tFactor * phFactor;
+      return Math.max(0, finalV);
+    }
+
+    function calculateTempActivity(t) {
+      if (t < 5) return 2;
+      if (t >= 65) return 0; // Denatured completely
+      if (t <= 37) {
+        // Arrhenius Q10 increase up to optimum
+        return 100 * Math.exp(-Math.pow((t - 37) / 16, 2));
+      } else {
+        // Sharp thermal denaturation drop
+        return 100 * Math.exp(-Math.pow((t - 37) / 7.5, 2));
+      }
+    }
+
+    function calculatePhActivity(ph, optimum = 7.4) {
+      return 100 * Math.exp(-Math.pow((ph - optimum) / 1.8, 2));
+    }
+
+    function updateKineticsSimulation() {
+      state.temperature = parseFloat(document.getElementById('slider-temp').value);
+      state.pH = parseFloat(document.getElementById('slider-ph').value);
+      state.substrateConc = parseFloat(document.getElementById('slider-substrate').value);
+
+      document.getElementById('disp-temp').innerText = state.temperature.toFixed(1) + ' °C';
+      document.getElementById('disp-ph').innerText = state.pH.toFixed(2);
+      document.getElementById('disp-substrate').innerText = state.substrateConc.toFixed(1) + ' &mu;M';
+      document.getElementById('tag-current-s').innerText = state.substrateConc.toFixed(0) + ' &mu;M';
+
+      // Thermal denaturation feedback
+      const tempWarn = document.getElementById('status-temp-warning');
+      if (state.temperature > 50) {
+        tempWarn.innerText = '¡Desnaturalización térmica severa! La enzima pierde estructura terciaria y se inactiva irreversiblemente.';
+        tempWarn.className = 'text-[11px] font-medium text-rose-700 bg-rose-50 px-2.5 py-1 rounded-md border border-rose-200';
+      } else if (state.temperature > 40) {
+        tempWarn.innerText = 'Riesgo de desnaturalización térmica progresiva (fiebre extrema / shock térmico).';
+        tempWarn.className = 'text-[11px] font-medium text-amber-700 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-200';
+      } else if (state.temperature < 20) {
+        tempWarn.innerText = 'Hipotermia / Baja agitación térmica: colisiones enzima-sustrato infrecuentes.';
+        tempWarn.className = 'text-[11px] font-medium text-blue-700 bg-blue-50 px-2.5 py-1 rounded-md border border-blue-200';
+      } else {
+        tempWarn.innerText = 'Conformación óptima: cinética enzimática celular conservada.';
+        tempWarn.className = 'text-[11px] font-medium text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-100';
+      }
+
+      // Compute observed velocity
+      const currentV = calculateCurrentV();
+      const pct = (currentV / 100) * 100;
+
+      document.getElementById('kinetic-pct').innerText = pct.toFixed(1) + '% de Vmax';
+      document.getElementById('v-progress-bar').style.width = Math.min(100, Math.max(0, pct)) + '%';
+      document.getElementById('v-abs-value').innerText = currentV.toFixed(1) + ' &mu;mol/s';
+
+      // Update MM chart current point
+      if (chartInstances.mm) {
+        chartInstances.mm.data.datasets[1].data = [{ x: state.substrateConc, y: currentV }];
+        chartInstances.mm.update('none');
+      }
+    }
+
+    function resetKineticSliders() {
+      document.getElementById('slider-temp').value = 37;
+      document.getElementById('slider-ph').value = 7.4;
+      document.getElementById('slider-substrate').value = 25;
+      updateKineticsSimulation();
+      showToast('Parámetros fisiológicos humanos reestablecidos (37°C, pH 7.4).', 'info');
+    }
+
+    function setPhPreset(type) {
+      const slider = document.getElementById('slider-ph');
+      const desc = document.getElementById('status-ph-desc');
+      if (type === 'pepsin') {
+        slider.value = 1.8;
+        desc.innerText = 'Microambiente gástrico ácido (Pepsina activa a pH 1.5 - 2.0).';
+      } else if (type === 'salivary') {
+        slider.value = 6.9;
+        desc.innerText = 'Cavidad bucal (Amilasa salival activa a pH neutro ~6.8).';
+      } else if (type === 'trypsin') {
+        slider.value = 8.2;
+        desc.innerText = 'Duodeno e intestino delgado alcalinizado (Tripsina activa a pH 8.0 - 8.5).';
+      }
+      updateKineticsSimulation();
+    }
+
+    /* ========================================================================= */
+    /* MODULE 5: INHIBICIÓN FARMACOLÓGICA Y DIAGNÓSTICO CLÍNICO                 */
+    /* ========================================================================= */
+    function switchSubTabClinical(sub) {
+      const btnInh = document.getElementById('btn-subtab-inhibition');
+      const btnDiag = document.getElementById('btn-subtab-diagnostics');
+      const viewInh = document.getElementById('subtab-content-inhibition');
+      const viewDiag = document.getElementById('subtab-content-diagnostics');
+
+      if (sub === 'inhibition') {
+        btnInh.className = 'px-3 py-2 text-xs font-bold rounded-lg bg-rose-600 text-white shadow';
+        btnDiag.className = 'px-3 py-2 text-xs font-bold rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200';
+        viewInh.classList.remove('hidden');
+        viewDiag.classList.add('hidden');
+        drawInhibitionStericScene();
+        if (chartInstances.inhibitionCurve) chartInstances.inhibitionCurve.resize();
+      } else {
+        btnDiag.className = 'px-3 py-2 text-xs font-bold rounded-lg bg-cyan-600 text-white shadow';
+        btnInh.className = 'px-3 py-2 text-xs font-bold rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200';
+        viewDiag.classList.remove('hidden');
+        viewInh.classList.add('hidden');
+        if (chartInstances.clinicalBar) chartInstances.clinicalBar.resize();
+      }
+    }
+
+    let inhCanvas, inhCtx;
+
+    function initInhibitionCanvas() {
+      inhCanvas = document.getElementById('inhibitionCanvas');
+      if (inhCanvas) {
+        inhCtx = inhCanvas.getContext('2d');
+        fitCanvasResolution(inhCanvas);
+        drawInhibitionStericScene();
+      }
+      initInhibitionCurveChart();
+    }
+
+    function updateInhibitionType(type) {
+      state.inhibitorType = type;
+      const kmEl = document.getElementById('metric-km');
+      const vmaxEl = document.getElementById('metric-vmax');
+      const revEl = document.getElementById('metric-reversible');
+      const drugBox = document.getElementById('drug-example-box');
+      const subtitle = document.getElementById('inhibition-visual-subtitle');
+      const badge = document.getElementById('inhibition-visual-badge');
+
+      if (type === 'none') {
+        kmEl.innerText = '20.0 &mu;M (Basal)';
+        kmEl.className = 'font-mono font-bold text-slate-900';
+        vmaxEl.innerText = '100.0 &mu;mol/s (100%)';
+        vmaxEl.className = 'font-mono font-bold text-slate-900';
+        revEl.innerText = 'N/A';
+        revEl.className = 'font-bold text-slate-500';
+        subtitle.innerText = 'Enzima en estado basal activo sin bloqueos';
+        badge.innerText = 'Control';
+        badge.className = 'px-2.5 py-1 rounded text-xs font-mono font-bold bg-slate-100 text-slate-700';
+        drugBox.innerHTML = '<strong>Control Fisiológico:</strong> Sin fármacos interferentes. La catálisis ocurre con afinidad estérica natural.';
+      } else if (type === 'competitive') {
+        kmEl.innerText = '55.0 &mu;M (Aumenta / Menor afinidad aparente)';
+        kmEl.className = 'font-mono font-bold text-rose-600';
+        vmaxEl.innerText = '100.0 &mu;mol/s (Se alcanza con suficiente [S])';
+        vmaxEl.className = 'font-mono font-bold text-emerald-600';
+        revEl.innerText = 'SÍ (Reversible aumentando [S])';
+        revEl.className = 'font-bold text-emerald-600';
+        subtitle.innerText = 'El fármaco ocupa directamente el sitio activo, impidiendo físicamente al sustrato';
+        badge.innerText = 'Inhibición Competitiva';
+        badge.className = 'px-2.5 py-1 rounded text-xs font-mono font-bold bg-rose-100 text-rose-800';
+        drugBox.innerHTML = '<strong>Farmacología de Estatinas (Atorvastatina / Simvastatina):</strong> Análogos estructurales que inhiben competitivamente a la <em>HMG-CoA Reductasa</em> en hepatocitos, bloqueando la síntesis endógena de colesterol.';
+      } else if (type === 'noncompetitive') {
+        kmEl.innerText = '20.0 &mu;M (Inalterada)';
+        kmEl.className = 'font-mono font-bold text-emerald-600';
+        vmaxEl.innerText = '48.0 &mu;mol/s (Disminuye a menos de la mitad)';
+        vmaxEl.className = 'font-mono font-bold text-rose-600';
+        revEl.innerText = 'NO (No se revierte con más [S])';
+        revEl.className = 'font-bold text-rose-600';
+        subtitle.innerText = 'El modulador alostérico distorsiona la geometría del sitio activo a distancia';
+        badge.innerText = 'Inhibición No Competitiva (Alostérica)';
+        badge.className = 'px-2.5 py-1 rounded text-xs font-mono font-bold bg-purple-100 text-purple-800';
+        drugBox.innerHTML = '<strong>Farmacología de Sedantes / Toxinas:</strong> Moléculas alostéricas que modifican la velocidad catalítica intrínseca sin importar cuánto sustrato intracelular se acumule.';
+      }
+
+      drawInhibitionStericScene();
+      updateInhibitionCurve();
+    }
+
+    function drawInhibitionStericScene() {
+      if (!inhCanvas) return;
+      fitCanvasResolution(inhCanvas);
+      const w = inhCanvas.getBoundingClientRect().width;
+      const h = inhCanvas.getBoundingClientRect().height;
+      const ctx = inhCtx;
+
+      ctx.clearRect(0, 0, w, h);
+
+      const cx = w * 0.45;
+      const cy = h * 0.55;
+
+      // Draw Enzyme with shape responsive to allosteric modulation
+      ctx.save();
+      const isAllo = state.inhibitorType === 'noncompetitive';
+
+      ctx.fillStyle = isAllo ? '#6366f1' : '#0284c7'; // indigo if distorted, blue if normal
+      ctx.strokeStyle = isAllo ? '#a5b4fc' : '#38bdf8';
+      ctx.lineWidth = 3;
+
+      ctx.beginPath();
+      ctx.moveTo(cx - 120, cy);
+      ctx.bezierCurveTo(cx - 120, cy - 80, cx - 60, cy - 80, cx - 40, cy - 50);
+
+      if (isAllo) {
+        // Distorted / pinched active site! Substrate can no longer fit properly
+        ctx.lineTo(cx - 10, cy - 10);
+        ctx.lineTo(cx + 10, cy - 10);
+        ctx.lineTo(cx + 40, cy - 50);
+      } else {
+        // Normal crisp active site notch
+        ctx.lineTo(cx - 30, cy - 20);
+        ctx.lineTo(cx - 15, cy - 20);
+        ctx.lineTo(cx - 15, cy - 5);
+        ctx.lineTo(cx + 15, cy - 5);
+        ctx.lineTo(cx + 15, cy - 20);
+        ctx.lineTo(cx + 30, cy - 20);
+        ctx.lineTo(cx + 40, cy - 50);
+      }
+
+      ctx.bezierCurveTo(cx + 60, cy - 80, cx + 120, cy - 80, cx + 120, cy);
+      ctx.bezierCurveTo(cx + 120, cy + 80, cx - 120, cy + 80, cx - 120, cy);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      // Label
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 12px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(isAllo ? 'Enzima con Cambio Conformacional' : 'Enzima Diana Farmacológica', cx, cy + 40);
+
+      // Allosteric site
+      ctx.beginPath();
+      ctx.arc(cx + 90, cy + 25, 16, 0, Math.PI * 2);
+      ctx.fillStyle = '#f59e0b';
+      ctx.fill();
+      ctx.stroke();
+
+      // If Non-Competitive: Draw Allosteric Inhibitor binding to allosteric site
+      if (isAllo) {
+        ctx.fillStyle = '#ec4899'; // pink inhibitor
+        ctx.beginPath();
+        ctx.arc(cx + 90, cy + 25, 12, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#ffffff';
+        ctx.stroke();
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 9px Inter, sans-serif';
+        ctx.fillText('Inhibidor', cx + 90, cy + 50);
+        ctx.fillText('Alostérico', cx + 90, cy + 60);
+
+        // Substrate rejected above
+        drawMonosaccharide(ctx, cx, cy - 85, '#f59e0b', 'Sustrato Rechazado');
+      } else if (state.inhibitorType === 'competitive') {
+        // Competitive inhibitor directly blocking active site!
+        ctx.fillStyle = '#f43f5e'; // rose inhibitor
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 2;
+
+        // Draw shaped plug fitting the active notch
+        ctx.beginPath();
+        ctx.rect(cx - 20, cy - 25, 40, 22);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 9px Inter, sans-serif';
+        ctx.fillText('Inhibidor Competitivo', cx, cy - 35);
+        ctx.fillText('(Ocupa Sitio Activo)', cx, cy + 2);
+
+        // Substrate floating blocked
+        drawMonosaccharide(ctx, cx - 75, cy - 85, '#f59e0b', 'Sustrato Desplazado');
+      } else {
+        // Normal substrate docking
+        drawMonosaccharide(ctx, cx, cy - 75, '#f59e0b', 'Sustrato Libre para Entrar');
+      }
+
+      ctx.restore();
+    }
+
+    function initInhibitionCurveChart() {
+      const ctx = document.getElementById('inhibitionCurveChart');
+      if (!ctx) return;
+
+      const sVals = [];
+      const vBasal = [];
+      for (let s = 0; s <= 120; s += 4) {
+        sVals.push(s);
+        vBasal.push((100 * s) / (20 + s));
+      }
+
+      chartInstances.inhibitionCurve = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: sVals,
+          datasets: [
+            {
+              label: 'Control (Sin Inhibidor)',
+              data: vBasal,
+              borderColor: '#94a3b8',
+              borderWidth: 2,
+              borderDash: [4, 4],
+              pointRadius: 0
+            },
+            {
+              label: 'Curva con Fármaco',
+              data: vBasal, // Initially same
+              borderColor: '#f43f5e',
+              borderWidth: 2.5,
+              pointRadius: 0
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: { title: { display: true, text: '[S] Sustrato (&mu;M)', font: { size: 9 } } },
+            y: { title: { display: true, text: 'Velocidad (&mu;mol/s)', font: { size: 9 } }, min: 0, max: 110 }
+          },
+          plugins: {
+            legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } }
+          }
+        }
+      });
+    }
+
+    function updateInhibitionCurve() {
+      if (!chartInstances.inhibitionCurve) return;
+      const type = state.inhibitorType;
+      const sVals = [];
+      const vInh = [];
+
+      for (let s = 0; s <= 120; s += 4) {
+        sVals.push(s);
+        if (type === 'none') {
+          vInh.push((100 * s) / (20 + s));
+        } else if (type === 'competitive') {
+          // Km increases from 20 to 55, Vmax stays 100
+          vInh.push((100 * s) / (55 + s));
+        } else if (type === 'noncompetitive') {
+          // Km stays 20, Vmax drops to 48
+          vInh.push((48 * s) / (20 + s));
+        }
+      }
+
+      chartInstances.inhibitionCurve.data.datasets[1].data = vInh;
+      chartInstances.inhibitionCurve.update();
+    }
+
+    /* Diagnostics & Clinical Cases */
+    function initClinicalCaseView() {
+      const ctx = document.getElementById('clinicalBarChart');
+      if (!ctx) return;
+
+      chartInstances.clinicalBar = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['CPK Total', 'CPK-MB', 'AST (GOT)', 'ALT (GPT)', 'Amilasa / Lipasa'],
+          datasets: [
+            {
+              label: 'Nivel Sanguíneo del Paciente (UI/L)',
+              data: CLINICAL_CASES.iam.values,
+              backgroundColor: ['#06b6d4', '#f43f5e', '#f59e0b', '#10b981', '#8b5cf6'],
+              borderRadius: 6
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: { display: true, text: 'Concentración Sérica (UI/L)', font: { size: 10 } }
+            }
+          },
+          plugins: {
+            legend: { display: false }
+          }
+        }
+      });
+
+      loadClinicalCase('iam');
+    }
+
+    function loadClinicalCase(caseKey) {
+      state.currentCase = caseKey;
+      const c = CLINICAL_CASES[caseKey];
+
+      // Update case select buttons styling
+      document.querySelectorAll('.case-card').forEach(btn => {
+        btn.classList.remove('border-2', 'border-cyan-500', 'bg-cyan-50/20');
+        btn.classList.add('border', 'border-slate-200');
+      });
+      const activeBtn = document.getElementById('case-btn-' + caseKey);
+      if (activeBtn) {
+        activeBtn.classList.remove('border-slate-200');
+        activeBtn.classList.add('border-2', 'border-cyan-500', 'bg-cyan-50/20');
+      }
+
+      // Update narrative
+      document.getElementById('case-title').innerText = c.title;
+      document.getElementById('case-tag').innerText = c.tag;
+      document.getElementById('case-narrative').innerText = c.narrative;
+      document.getElementById('case-physico').innerText = c.physico;
+
+      // Update ref labels
+      document.getElementById('ref-cpk').innerText = c.refs[0];
+      document.getElementById('ref-cpkmb').innerText = c.refs[1];
+      document.getElementById('ref-ast').innerText = c.refs[2];
+      document.getElementById('ref-alt').innerText = c.refs[3];
+
+      // Update chart
+      if (chartInstances.clinicalBar) {
+        chartInstances.clinicalBar.data.datasets[0].data = c.values;
+        chartInstances.clinicalBar.update();
+      }
+
+      // Reset diagnosis select & feedback
+      document.getElementById('select-diagnosis').value = '';
+      const feedback = document.getElementById('diag-feedback-box');
+      feedback.classList.add('hidden');
+    }
+
+    function evaluateClinicalDiagnosis() {
+      const select = document.getElementById('select-diagnosis');
+      const val = select.value;
+      const feedback = document.getElementById('diag-feedback-box');
+      const current = CLINICAL_CASES[state.currentCase];
+
+      if (!val) {
+        showToast('Por favor selecciona una hipótesis diagnóstica.', 'warn');
+        return;
+      }
+
+      feedback.classList.remove('hidden');
+
+      if (val === current.correct) {
+        feedback.className = 'p-3 rounded-xl text-xs leading-relaxed bg-emerald-50 border border-emerald-200 text-emerald-900';
+        feedback.innerHTML = `
+          <strong>¡Diagnóstico Correcto!</strong> Correlación biomédica exacta. La elevación específica de los biomarcadores séricos concuerda con la lisis celular del órgano afectado (${current.tag}).
+        `;
+        showToast('¡Caso resuelto con éxito!', 'success');
+      } else {
+        feedback.className = 'p-3 rounded-xl text-xs leading-relaxed bg-rose-50 border border-rose-200 text-rose-900';
+        feedback.innerHTML = `
+          <strong>Hipótesis Incorrecta.</strong> Observa con atención el patrón de transaminasas, isoenzimas musculares (CPK vs CPK-MB) o enzimas pancreáticas para diferenciar necrosis miocárdica de lesión muscular o hepática.
+        `;
+        showToast('Revisa el patrón de enzimas elevado en el gráfico.', 'warn');
+      }
+    }
+
+    /* ========================================================================= */
+    /* UI MODAL & TOAST HELPERS                                                 */
+    /* ========================================================================= */
+    function openInfoModal() {
+      document.getElementById('info-modal').classList.remove('hidden');
+    }
+
+    function closeInfoModal() {
+      document.getElementById('info-modal').classList.add('hidden');
+    }
+
+    function showToast(message, type = 'info') {
+      const toast = document.getElementById('toast-notification');
+      const msg = document.getElementById('toast-msg');
+      const icon = document.getElementById('toast-icon');
+
+      msg.innerText = message;
+
+      if (type === 'success') {
+        icon.className = 'fa-solid fa-circle-check text-emerald-400 text-base';
+      } else if (type === 'warn') {
+        icon.className = 'fa-solid fa-triangle-exclamation text-amber-400 text-base';
+      } else {
+        icon.className = 'fa-solid fa-circle-info text-cyan-400 text-base';
+      }
+
+      toast.classList.remove('translate-y-24', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-24', 'opacity-0');
+      }, 3400);
+    }
+  </script>
+</body>
+</html>
